@@ -87,16 +87,24 @@ class Database:
             cursor.close()
             return False
 
-    def update_user(self,first_name: str, last_name: str, passport_id: int, email: str, password: str, account_balance: int) -> bool:
+    def update_user(self, first_name: str, last_name: str, passport_id: int, email: str, password: str, account_balance: int, is_admin: bool) -> bool:
         join_date = str(datetime.datetime.today()).split(" ")[0]
         cursor = self.connection.cursor()
         try:
-            cursor.execute("""
+            if not is_admin:
+                cursor.execute("""
                         update users set
                         first_name=%s, last_name=%s, email=%s, password=%s,account_balance=%s
                         where  users.passport_id = %s;
                     """, (first_name, last_name, email, password, account_balance, passport_id)
                            )
+            else:
+                cursor.execute("""
+                                                    update admin set
+                                                    first_name=%s, last_name=%s, email=%s, password=%s
+                                                    where  admin.passport_id = %s;
+                                                """,
+                               (first_name, last_name, email, password, passport_id))
             self.connection.commit()
             cursor.close()
             return True
@@ -130,6 +138,21 @@ class Database:
         # if len(record) == 0:
         #     return False
         return record
+
+    def get_all_user(self):
+        cursor = self.connection.cursor()
+        cursor.execute("rollback;")
+        cursor.execute("""
+                select * from users;
+                """,)
+        self.connection.commit()
+        record = cursor.fetchall()
+        cursor.close()
+        return record
+
+    # def create_platform(self):
+    #     self.platform_insert_table()
+
 
     def admin_create_table(self):
         cursor = self.connection.cursor()
@@ -241,6 +264,21 @@ class Database:
         if len(record) == 0:
             return False
         return True
+
+    def get_os(self):
+        cursor = self.connection.cursor()
+        cursor.execute("rollback;")
+        cursor.execute("""
+                select * from os;
+                """, )
+        self.connection.commit()
+        record = cursor.fetchall()
+        cursor.close()
+        # if len(record) == 0:
+        #     return False
+        return record
+
+
 
     def platform_create_table(self):
         cursor = self.connection.cursor()
@@ -471,16 +509,20 @@ class Database:
             cursor.close()
             return False
 
-    def ticket_get_table(self, passport_id: int) -> list:
+    def ticket_get_table(self, passport_id: int, is_admin: bool) -> list:
         cursor = self.connection.cursor()
         create_time = str(datetime.datetime.now()).split(".")[0]
-        status = 0
         record =[]
         try:
-            cursor.execute("""
-                                select * from ticket where passport_id=%s;
-                            """, [passport_id]
-                           )
+            if not is_admin:
+                cursor.execute("""
+                                                select * from ticket where passport_id=%s;
+                                            """, [passport_id])
+            else:
+                cursor.execute("""
+                                                select * from ticket;
+                                            """,)
+
             self.connection.commit()
             record = cursor.fetchall()
             cursor.close()
@@ -503,14 +545,14 @@ class Database:
             return False
         return True
 
-    def update_ticket(self,ticket_id: str, passport_id: int, response: str, question: str, status: int) -> bool:
+    def update_ticket(self, ticket_id: str, passport_id: int, response: str, question: str, status: int) -> bool:
         cursor = self.connection.cursor()
         try:
             cursor.execute("""
                         update ticket set
                         ticket_id=%s, passport_id=%s,response=%s,question=%s,status=%s
-                        where  users.ticket_id = %s;
-                    """, (ticket_id, passport_id, response, question, status,ticket_id)
+                        where  ticket.ticket_id = %s;
+                    """, (ticket_id, passport_id, response, question, status, ticket_id)
                            )
             self.connection.commit()
             cursor.close()
@@ -570,6 +612,8 @@ class Database:
         if len(record) == 0:
             return False
         return True
+
+
 
 
 def main():

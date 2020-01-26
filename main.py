@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from dataBase import Database
+from operating_system import OperatingSystem
 from user import User
 
 stack = []
@@ -107,6 +108,7 @@ class Ui_Form(object):
         self.formLayout_2.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.label_24)
         self.register_is_admin = QtWidgets.QCheckBox(self.verticalLayoutWidget_2)
         self.register_is_admin.setObjectName("register_is_admin")
+        self.register_is_admin.clicked.connect(lambda: self.register_admin_select())
         self.formLayout_2.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.register_is_admin)
         self.register_password = QtWidgets.QLineEdit(self.verticalLayoutWidget_2)
         self.register_password.setObjectName("reagister_password")
@@ -147,17 +149,14 @@ class Ui_Form(object):
         self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_10)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.windows = QtWidgets.QRadioButton(self.verticalLayoutWidget_3)
-        self.windows.setChecked(False)
-        self.windows.setObjectName("windows")
-        self.horizontalLayout.addWidget(self.windows)
-        self.linux = QtWidgets.QRadioButton(self.verticalLayoutWidget_3)
-        self.linux.setChecked(True)
-        self.linux.setObjectName("linux")
-        self.horizontalLayout.addWidget(self.linux)
-        self.mac = QtWidgets.QRadioButton(self.verticalLayoutWidget_3)
-        self.mac.setObjectName("mac")
-        self.horizontalLayout.addWidget(self.mac)
+        #create new platform
+        for i in range(len(self.os_list)):
+            operating = QtWidgets.QRadioButton(self.verticalLayoutWidget_3)
+            operating.setChecked(False)
+            operating.setObjectName(self.os_list[i].name)
+            operating.setText(self.os_list[i].name)
+            self.horizontalLayout.addWidget(operating)
+            self.operating_system.append(operating)
         self.formLayout_3.setLayout(1, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -323,17 +322,26 @@ class Ui_Form(object):
         self.formLayout_6.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_29)
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        self.windows_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
-        self.windows_3.setChecked(False)
-        self.windows_3.setObjectName("windows_3")
-        self.horizontalLayout_8.addWidget(self.windows_3)
-        self.linux_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
-        self.linux_3.setChecked(True)
-        self.linux_3.setObjectName("linux_3")
-        self.horizontalLayout_8.addWidget(self.linux_3)
-        self.mac_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
-        self.mac_3.setObjectName("mac_3")
-        self.horizontalLayout_8.addWidget(self.mac_3)
+
+        for i in self.os_list:
+            operating = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
+            operating.setChecked(False)
+            operating.setObjectName(i.name)
+            operating.setText(i.name)
+            self.horizontalLayout_8.addWidget(operating)
+            self.operating_system1.append(operating)
+        #
+        # self.windows_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
+        # self.windows_3.setChecked(False)
+        # self.windows_3.setObjectName("windows_3")
+        # self.horizontalLayout_8.addWidget(self.windows_3)
+        # self.linux_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
+        # self.linux_3.setChecked(True)
+        # self.linux_3.setObjectName("linux_3")
+        # self.horizontalLayout_8.addWidget(self.linux_3)
+        # self.mac_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
+        # self.mac_3.setObjectName("mac_3")
+        # self.horizontalLayout_8.addWidget(self.mac_3)
         self.formLayout_6.setLayout(1, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_8)
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
@@ -362,25 +370,32 @@ class Ui_Form(object):
         self.label_34 = QtWidgets.QLabel(self.horizontalLayoutWidget_2)
         self.label_34.setObjectName("label_34")
         self.formLayout_6.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.label_34)
-        self.cpu_band_width = QtWidgets.QLineEdit(self.horizontalLayoutWidget_2)
-        self.cpu_band_width.setObjectName("cpu_band_width")
-        self.formLayout_6.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.cpu_band_width)
+        self.band_width_update = QtWidgets.QLineEdit(self.horizontalLayoutWidget_2)
+        self.band_width_update.setObjectName("cpu_band_width")
+        self.formLayout_6.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.band_width_update)
         self.pushButton_3 = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.pushButton_3.setObjectName("pushButton_3")
-        self.formLayout_6.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.pushButton_3)
+        self.formLayout_6.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.pushButton_3)
         self.line_3 = QtWidgets.QFrame(self.horizontalLayoutWidget_2)
         self.line_3.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_3.setObjectName("line_3")
-        self.formLayout_6.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.line_3)
+        self.formLayout_6.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.line_3)
         self.platform_create_2 = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.platform_create_2.setObjectName("platform_create_2")
-        self.formLayout_6.setWidget(8, QtWidgets.QFormLayout.SpanningRole, self.platform_create_2)
+        self.formLayout_6.setWidget(9, QtWidgets.QFormLayout.SpanningRole, self.platform_create_2)
         self.update_platform = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.update_platform.setObjectName("update_platform")
-        self.formLayout_6.setWidget(9, QtWidgets.QFormLayout.SpanningRole, self.update_platform)
+        self.formLayout_6.setWidget(10, QtWidgets.QFormLayout.SpanningRole, self.update_platform)
         self.delete_platform = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.delete_platform.setObjectName("delete_platform")
+        self.formLayout_6.setWidget(11, QtWidgets.QFormLayout.SpanningRole, self.delete_platform)
+        self.update_storage = QtWidgets.QLineEdit(self.horizontalLayoutWidget_2)
+        self.update_storage.setObjectName("update_storage")
+        self.formLayout_6.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.update_storage)
+        self.label_28 = QtWidgets.QLabel(self.horizontalLayoutWidget_2)
+        self.label_28.setObjectName("label_28")
+        self.formLayout_6.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.label_28)
         self.formLayout_6.setWidget(10, QtWidgets.QFormLayout.SpanningRole, self.delete_platform)
         self.update_platform_back = QtWidgets.QCommandLinkButton(self.horizontalLayoutWidget_2)
         self.update_platform_back.setObjectName("update_platform_back")
@@ -444,7 +459,7 @@ class Ui_Form(object):
         self.verticalLayout_6.addLayout(self.horizontalLayout_6)
         self.update_ticket = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.update_ticket.setObjectName("update_ticket")
-        # self.update_ticket.clicked.connect(self.update_tickett())
+        self.update_ticket.clicked.connect(lambda: self.update_tickett())
         self.verticalLayout_6.addWidget(self.update_ticket)
         self.delete_ticket_btn = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.delete_ticket_btn.setObjectName("delete_ticket")
@@ -558,9 +573,9 @@ class Ui_Form(object):
         self.create_platform_back.setText(_translate("Form", "back"))
         self.label_9.setText(_translate("Form", "platform"))
         self.label_10.setText(_translate("Form", "Os"))
-        self.windows.setText(_translate("Form", "windows"))
-        self.linux.setText(_translate("Form", "Linux"))
-        self.mac.setText(_translate("Form", "MacOs"))
+        # self.windows.setText(_translate("Form", "windows"))
+        # self.linux.setText(_translate("Form", "Linux"))
+        # self.mac.setText(_translate("Form", "MacOs"))
         self.label_11.setText(_translate("Form", "Ram"))
         self.label_12.setText(_translate("Form", "/MB "))
         self.label_13.setText(_translate("Form", "cpuCore  "))
@@ -573,7 +588,7 @@ class Ui_Form(object):
         self.add_tikets_page.clicked.connect(lambda: self.navigate_add_ticket())
         self.settings_page.setText(_translate("Form", "settings"))
         self.all_users_btn.setText(_translate("Form", "All users"))
-        self.settings_page.clicked.connect(lambda: self.navigate_settings())
+        self.settings_page.clicked.connect(lambda: self.navigate_settings(is_admin=self.user.is_admin))
         self.show_ticket_page.setText(_translate("Form", "show all tickets"))
         self.sign_out_btn.setText(_translate("Form", "sign out"))
         self.account_settings_back.setText(_translate("Form", "Back"))
@@ -586,12 +601,12 @@ class Ui_Form(object):
         self.label_21.setText(_translate("Form", "Account Balance"))
         self.label_23.setText(_translate("Form", "password"))
         self.signUp_2.setText(_translate("Form", "Update"))
-        self.signUp_2.clicked.connect(lambda: self.update_user())
+        self.signUp_2.clicked.connect(lambda: self.update_user(self.user.is_admin))
         self.settings_delete.setText(_translate("Form", "Delete Account"))
         self.label_29.setText(_translate("Form", "Os"))
-        self.windows_3.setText(_translate("Form", "windows"))
-        self.linux_3.setText(_translate("Form", "Linux"))
-        self.mac_3.setText(_translate("Form", "MacOs"))
+        #self.windows_3.setText(_translate("Form", "windows"))
+        #self.linux_3.setText(_translate("Form", "Linux"))
+        #self.mac_3.setText(_translate("Form", "MacOs"))
         self.label_30.setText(_translate("Form", "Ram"))
         self.label_31.setText(_translate("Form", "/MB "))
         self.label_32.setText(_translate("Form", "cpuCore  "))
@@ -601,6 +616,7 @@ class Ui_Form(object):
         self.platform_create_2.setText(_translate("Form", "Create"))
         self.update_platform.setText(_translate("Form", "update"))
         self.delete_platform.setText(_translate("Form", "Delete platform"))
+        self.label_28.setText(_translate("Form", "storage"))
         self.update_platform_back.setText(_translate("Form", "Back"))
         self.update_ticket_back.setText(_translate("Form", "back"))
         self.search.setText(_translate("Form", "search"))
@@ -625,7 +641,14 @@ class Ui_Form(object):
     def navigate_register(self):
         self.stackedWidget.setCurrentIndex(1)
 
-    def navigate_settings(self):
+    def navigate_settings(self, is_admin: bool):
+        if is_admin:
+            self.label_21.setText("Admin ID")
+            self.register_balance.setEnabled(False)
+        else:
+            self.label_21.setText("Account Balance")
+            self.register_balance.setEnabled(True)
+
         self.settings_name.setText(self.user.first_name)
         self.settings_family.setText(self.user.last_name)
         self.settings_email.setText(self.user.email)
@@ -648,7 +671,7 @@ class Ui_Form(object):
         self.stackedWidget.setCurrentIndex(6)
 
     def navigate_all_users(self):
-        # todo DataBase alluser
+        self.get_all_user()
         stack.append(self.stackedWidget.currentIndex())
         self.stackedWidget.setCurrentIndex(9)
 
@@ -692,7 +715,7 @@ class Ui_Form(object):
             stack.clear()
             self.stackedWidget.setCurrentIndex(0)
 
-    def update_user(self):
+    def update_user(self, is_admin: bool):
         name = self.settings_name.text()
         family = self.settings_family.text()
         account = self.settings_balance.text()
@@ -700,7 +723,7 @@ class Ui_Form(object):
         email = self.settings_email.text()
         password = self.user.password
         self.data_base.update_user(first_name=name, last_name=family, passport_id=passport_id, email=email,
-                                   password=password, account_balance=account)
+                                   password=password, account_balance=account,is_admin=is_admin)
         record = self.data_base.check_user(passport_id=passport_id)
         self.create_user(record, self.user.is_admin)
         self.navigate_last_page()
@@ -710,49 +733,70 @@ class Ui_Form(object):
         family_name = self.register_family.text()
         email = self.register_email.text()
         passport_id = int(self.register_passportid.text())
-        account = int(self.register_balance.text())
-        is_admin = self.register_is_admin.checkState() == QtCore.Qt.Checked
+
+        self.is_admin = self.register_is_admin.checkState() == QtCore.Qt.Checked
         password = self.register_password.text()
         record = []
-        if is_admin == False:
+        if self.is_admin == False:
+            account = int(self.register_balance.text())
             self.data_base.user_insert_table(first_name=name, last_name=family_name, passport_id=passport_id,
                                              email=email, password=password, account_balance=account)
             record = self.data_base.check_user(passport_id=passport_id)
             if len(record) > 0:
-                self.create_user(record, is_admin=is_admin)
+                self.create_user(record, is_admin=self.is_admin)
                 self.stackedWidget.setCurrentIndex(3)
+        else:
+            self.data_base.admin_insert_table(first_name=name, last_name=family_name, email=email, passport_id=passport_id, password=password)
+            self.stackedWidget.setCurrentIndex(3)
+
+    def register_admin_select(self):
+        if self.register_is_admin.isChecked():
+            self.register_balance.setEnabled(False)
+        else:
+            self.register_balance.setEnabled(True)
 
     def create_user(self, result: list, is_admin: bool):
-        password = str(result[0][4]).replace(' ', '')
-        first_name = str(result[0][0]).replace(' ', '')
-        email = str(result[0][3]).replace(' ', '')
-        join_date = str(result[0][5]).replace(' ', '')
-        passport_id = int(result[0][2])
-        account_balance = int(result[0][6])
-        last_name = str(result[0][1]).replace(' ', '')
-        self.user = User(passport_id=passport_id, first_name=first_name, last_name=last_name, email=email,
+        if not is_admin:
+            password = str(result[0][4]).replace(' ', '')
+            first_name = str(result[0][0]).replace(' ', '')
+            email = str(result[0][3]).replace(' ', '')
+            join_date = str(result[0][5]).replace(' ', '')
+            passport_id = int(result[0][2])
+            account_balance = int(result[0][6])
+            last_name = str(result[0][1]).replace(' ', '')
+            self.user = User(passport_id=passport_id, first_name=first_name, last_name=last_name, email=email,
                          password=password, join_date=join_date, is_admin=is_admin, account_balance=account_balance)
-        if self.user.is_admin == False:
-            self.ticket_show_answer.setEnabled(False)
-            self.ticket_show_question.setEnabled(False)
-            self.update_ticket.setEnabled(False)
-            self.radio_answered.setEnabled(False)
-            self.radio_rejected.setEnabled(False)
-            self.radio_waiting.setEnabled(False)
         else:
-            self.ticket_show_answer.setEnabled(True)
-            self.ticket_show_question.setEnabled(True)
-            self.update_ticket.setEnabled(True)
-            self.radio_answered.setEnabled(True)
-            self.radio_rejected.setEnabled(True)
-            self.radio_waiting.setEnabled(True)
+            password = str(result[0][5]).replace(' ', '')
+            first_name = str(result[0][1]).replace(' ', '')
+            email = str(result[0][4]).replace(' ', '')
+            passport_id = int(result[0][3])
+            last_name = str(result[0][2]).replace(' ', '')
+            admin_id = str(result[0][0]).replace(' ', '')
+            self.user = User(passport_id=passport_id, first_name=first_name, last_name=last_name, email=email,
+                             password=password, join_date="join_date", is_admin=is_admin, account_balance=admin_id)
+
+        # if self.user.is_admin == False:
+        #     self.ticket_show_answer.setEnabled(False)
+        #     self.ticket_show_question.setEnabled(False)
+        #     self.update_ticket.setEnabled(False)
+        #     self.radio_answered.setEnabled(False)
+        #     self.radio_rejected.setEnabled(False)
+        #     self.radio_waiting.setEnabled(False)
+        # else:
+        #     self.ticket_show_answer.setEnabled(True)
+        #     self.ticket_show_question.setEnabled(True)
+        #     self.update_ticket.setEnabled(True)
+        #     self.radio_answered.setEnabled(True)
+        #     self.radio_rejected.setEnabled(True)
+        #     self.radio_waiting.setEnabled(True)
 
     def delete_ticket(self):
         self.data_base.ticket_delete(self.tickets[self.selected_ticket][0])
         self.get_all_tickets()
 
     def get_all_tickets(self):
-        record = self.data_base.ticket_get_table(self.user.passport_id)
+        record = self.data_base.ticket_get_table(self.user.passport_id, self.user.is_admin)
         self.tickets = record
         self.ticket_table.setColumnCount(len(record[0]))
         self.ticket_table.setRowCount(len(record))
@@ -780,15 +824,57 @@ class Ui_Form(object):
             self.navigate_last_page()
             self.add_ticket.clear()
 
-    # def update_tickett(self):
-    #     ticket = self.tickets[self.ticket_table.currentRow()]
-    #     self.data_base.update_ticket(ticket[0], ticket[1], ticket[3], ticket[4], ticket[5])
-    #     self.get_all_tickets()
+    def update_tickett(self):
+        ticket = self.tickets[self.ticket_table.currentRow()]
+
+        staus = 0
+
+        if self.radio_rejected.isChecked():
+            staus = 2
+        elif self.radio_answered.isChecked():
+            staus =1
+
+        self.data_base.update_ticket(ticket[0], ticket[1], self.ticket_show_answer.toPlainText(), self.ticket_show_question.toPlainText(), status=staus)
+        self.get_all_tickets()
+
+    def get_all_user(self):
+        record = self.data_base.get_all_user()
+        self.all_user = record
+        self.user_table.setColumnCount(len(record))
+        self.user_table.setRowCount(len(record[0]))
+        for i in range(len(record)):
+            for j in range(len(record[i])):
+                self.user_table.setItem(i, j, QtWidgets.QTableWidgetItem(str(record[i][len(record[i]) - j - 1])))
+
+    def get_os(self):
+        record = self.data_base.get_os()
+        self.os_list=list()
+        for i in record:
+            operating_system = OperatingSystem(name=i[1], os_id=i[0])
+            self.os_list.append(operating_system)
+
+    def create_platform(self):
+        ram = self.ram_update.text()
+        bandWidth = self.band_width_update.text()
+        core = self.cpu_core_update.text()
+        rate = self.cpu_rate_update.text()
+        storage = self.update_storage.text()
+        status = 0
+        #todo
+
+
+
+
 
     def __init__(self):
         self.data_base = Database()
         self.user = User(first_name="", last_name="", passport_id=0, is_admin=False, email="", join_date="",
-                         account_balance=0,password="")
+                         account_balance=0, password="")
+        self.get_os()
+        #for create platform
+        self.operating_system = list()
+        #for show all platform
+        self.operating_system1: list[ QtWidgets.QRadioButton]
 
 
 if __name__ == "__main__":

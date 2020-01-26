@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e264dc46-aa0d-4af7-a721-7b9545fd38a4" name="Default Changelist" comment="" />
+    <list default="true" id="e264dc46-aa0d-4af7-a721-7b9545fd38a4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/operating_system.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataBase.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +20,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1Wk2pMk1KLAavrGbXmyMjhbu2Tf" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -22,6 +32,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/Hospital-Management-master/Hospital-Management-master" />
   </component>
@@ -99,7 +110,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1579679453421</updated>
-      <workItem from="1579679454669" duration="61190000" />
+      <workItem from="1579679454669" duration="75732000" />
     </task>
     <servers />
   </component>
@@ -107,42 +118,50 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="393" y="8" key="CommitChangelistDialog2" timestamp="1579985161939">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="393" y="8" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579985161939" />
     <state x="549" y="168" key="FileChooserDialogImpl" timestamp="1579685300950">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="168" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579685300950" />
-    <state width="724" height="201" key="GridCell.Tab.0.bottom" timestamp="1579958097241">
+    <state width="1493" height="257" key="GridCell.Tab.0.bottom" timestamp="1579990342202">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="724" height="201" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579958097241" />
-    <state width="724" height="201" key="GridCell.Tab.0.center" timestamp="1579958097240">
+    <state width="1493" height="257" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579990342202" />
+    <state width="1493" height="257" key="GridCell.Tab.0.center" timestamp="1579990342202">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="724" height="201" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1579958097240" />
-    <state width="724" height="201" key="GridCell.Tab.0.left" timestamp="1579958097240">
+    <state width="1493" height="257" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1579990342202" />
+    <state width="1493" height="257" key="GridCell.Tab.0.left" timestamp="1579990342202">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="724" height="201" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1579958097240" />
-    <state width="724" height="201" key="GridCell.Tab.0.right" timestamp="1579958097241">
+    <state width="1493" height="257" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1579990342202" />
+    <state width="1493" height="257" key="GridCell.Tab.0.right" timestamp="1579990342202">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="724" height="201" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1579958097241" />
-    <state width="724" height="260" key="GridCell.Tab.1.bottom" timestamp="1579958073827">
+    <state width="1493" height="257" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1579990342202" />
+    <state width="1493" height="257" key="GridCell.Tab.1.bottom" timestamp="1579990342124">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="724" height="260" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579958073827" />
-    <state width="724" height="260" key="GridCell.Tab.1.center" timestamp="1579958073827">
+    <state width="1493" height="257" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579990342124" />
+    <state width="1493" height="257" key="GridCell.Tab.1.center" timestamp="1579990342124">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="724" height="260" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1579958073827" />
-    <state width="724" height="260" key="GridCell.Tab.1.left" timestamp="1579958073827">
+    <state width="1493" height="257" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1579990342124" />
+    <state width="1493" height="257" key="GridCell.Tab.1.left" timestamp="1579990342124">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="724" height="260" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1579958073827" />
-    <state width="724" height="260" key="GridCell.Tab.1.right" timestamp="1579958073827">
+    <state width="1493" height="257" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1579990342124" />
+    <state width="1493" height="257" key="GridCell.Tab.1.right" timestamp="1579990342124">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="724" height="260" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1579958073827" />
+    <state width="1493" height="257" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1579990342124" />
+    <state width="391" height="419" key="XDebugger.FullValuePopup" timestamp="1579968880400">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="391" height="419" key="XDebugger.FullValuePopup/0.0.1536.824@0.0.1536.824" timestamp="1579968880400" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -164,33 +183,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/dataBase.py</url>
-          <line>75</line>
-          <option name="timeStamp" value="46" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dataBase.py</url>
-          <line>76</line>
-          <option name="timeStamp" value="47" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dataBase.py</url>
-          <line>89</line>
-          <option name="timeStamp" value="48" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dataBase.py</url>
-          <line>91</line>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dataBase.py</url>
-          <line>99</line>
+          <line>107</line>
           <option name="timeStamp" value="52" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dataBase.py</url>
-          <line>93</line>
-          <option name="timeStamp" value="53" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -203,15 +197,13 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="record" />
-        <watch expression="update users set                         (first_name, last_name, passport_id, email, password, join_date, account_balance)                         values (%s, %s, %s, %s, %s, %s, %s)                         where  users.passport_id = %s" language="Python" />
-        <watch expression="cursor.connection.dsn" />
-        <watch expression="len(record)" language="Python" />
+        <watch expression="self.os_list" language="Python" />
+        <watch expression="self.os_list[i]" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/untitled1$main.coverage" NAME="main Coverage Results" MODIFIED="1579958097234" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/untitled1$main.coverage" NAME="main Coverage Results" MODIFIED="1579990342093" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/untitled1$dataBase.coverage" NAME="dataBase Coverage Results" MODIFIED="1579726022051" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
