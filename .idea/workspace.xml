@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e264dc46-aa0d-4af7-a721-7b9545fd38a4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/platformdata.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dataBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataBase.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -111,7 +110,7 @@
       <option name="presentableId" value="Default" />
       <updated>1579679453421</updated>
       <workItem from="1579679454669" duration="77345000" />
-      <workItem from="1580110100899" duration="44574000" />
+      <workItem from="1580110100899" duration="76799000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <created>1580032795481</created>
@@ -120,7 +119,14 @@
       <option name="project" value="LOCAL" />
       <updated>1580032795481</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add platform">
+      <created>1580301825923</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1580301825923</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -128,7 +134,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="add platform" />
+    <option name="LAST_COMMIT_MESSAGE" value="add platform" />
   </component>
   <component name="WindowStateProjectService">
     <state x="361" y="72" key="#SQL_Dialects" timestamp="1580301046952">
@@ -139,10 +146,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="823" y="7" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1580229971215" />
-    <state x="393" y="8" key="CommitChangelistDialog2" timestamp="1580032794730">
+    <state x="393" y="8" key="CommitChangelistDialog2" timestamp="1580301825192">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="393" y="8" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1580032794730" />
+    <state x="393" y="8" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1580301825192" />
     <state x="147" y="71" key="DiffContextDialog" timestamp="1580289488570">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -151,38 +158,38 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="168" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579685300950" />
-    <state width="1493" height="257" key="GridCell.Tab.0.bottom" timestamp="1580301716583">
+    <state width="724" height="259" key="GridCell.Tab.0.bottom" timestamp="1580338680459">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580301716583" />
-    <state width="1493" height="257" key="GridCell.Tab.0.center" timestamp="1580301716583">
+    <state width="724" height="259" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580338680459" />
+    <state width="724" height="259" key="GridCell.Tab.0.center" timestamp="1580338680459">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1580301716583" />
-    <state width="1493" height="257" key="GridCell.Tab.0.left" timestamp="1580301716583">
+    <state width="724" height="259" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1580338680459" />
+    <state width="724" height="259" key="GridCell.Tab.0.left" timestamp="1580338680459">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1580301716583" />
-    <state width="1493" height="257" key="GridCell.Tab.0.right" timestamp="1580301716583">
+    <state width="724" height="259" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1580338680459" />
+    <state width="724" height="259" key="GridCell.Tab.0.right" timestamp="1580338680459">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1580301716583" />
-    <state width="1493" height="257" key="GridCell.Tab.1.bottom" timestamp="1580301716517">
+    <state width="724" height="259" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1580338680459" />
+    <state width="724" height="259" key="GridCell.Tab.1.bottom" timestamp="1580338680459">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580301716517" />
-    <state width="1493" height="257" key="GridCell.Tab.1.center" timestamp="1580301716517">
+    <state width="724" height="259" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580338680459" />
+    <state width="724" height="259" key="GridCell.Tab.1.center" timestamp="1580338680459">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1580301716517" />
-    <state width="1493" height="257" key="GridCell.Tab.1.left" timestamp="1580301716517">
+    <state width="724" height="259" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1580338680459" />
+    <state width="724" height="259" key="GridCell.Tab.1.left" timestamp="1580338680459">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1580301716517" />
-    <state width="1493" height="257" key="GridCell.Tab.1.right" timestamp="1580301716517">
+    <state width="724" height="259" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1580338680459" />
+    <state width="724" height="259" key="GridCell.Tab.1.right" timestamp="1580338680459">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1580301716517" />
+    <state width="724" height="259" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1580338680459" />
     <state x="578" y="124" key="RollbackChangesDialog" timestamp="1580289490025">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -191,35 +198,100 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="56" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1580113798514" />
-    <state x="361" y="146" key="Vcs.Push.Dialog.v2" timestamp="1580032898972">
+    <state x="361" y="146" key="Vcs.Push.Dialog.v2" timestamp="1580301827293">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="146" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1580032898972" />
-    <state width="391" height="419" key="XDebugger.FullValuePopup" timestamp="1580299248220">
+    <state x="361" y="146" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1580301827293" />
+    <state width="391" height="419" key="XDebugger.FullValuePopup" timestamp="1580337622537">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="391" height="419" key="XDebugger.FullValuePopup/0.0.1536.824@0.0.1536.824" timestamp="1580299248220" />
-    <state x="465" y="238" key="com.intellij.ide.util.TipDialog" timestamp="1580110111673">
+    <state width="391" height="419" key="XDebugger.FullValuePopup/0.0.1536.824@0.0.1536.824" timestamp="1580337622537" />
+    <state x="465" y="238" key="com.intellij.ide.util.TipDialog" timestamp="1580341638985">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="465" y="238" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1580110111673" />
-    <state x="330" y="149" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1580290280291">
+    <state x="465" y="238" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1580341638985" />
+    <state x="330" y="149" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1580322564926">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="330" y="149" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824@0.0.1536.824" timestamp="1580290280291" />
+    <state x="330" y="149" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824@0.0.1536.824" timestamp="1580322564926" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>959</line>
-          <option name="timeStamp" value="88" />
+          <url>file://$PROJECT_DIR$/dataBase.py</url>
+          <line>531</line>
+          <option name="timeStamp" value="127" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/dataBase.py</url>
-          <line>552</line>
-          <option name="timeStamp" value="89" />
+          <line>536</line>
+          <option name="timeStamp" value="128" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>1445</line>
+          <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>1443</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/dataBase.py</url>
+          <line>711</line>
+          <option name="timeStamp" value="150" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/dataBase.py</url>
+          <line>715</line>
+          <option name="timeStamp" value="151" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>1423</line>
+          <option name="timeStamp" value="161" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>543</line>
+          <option name="timeStamp" value="165" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>1384</line>
+          <option name="timeStamp" value="166" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>1385</line>
+          <option name="timeStamp" value="167" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>1380</line>
+          <option name="timeStamp" value="168" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/dataBase.py</url>
+          <line>784</line>
+          <option name="timeStamp" value="169" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/dataBase.py</url>
+          <line>809</line>
+          <option name="timeStamp" value="170" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/dataBase.py</url>
+          <line>812</line>
+          <option name="timeStamp" value="171" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>953</line>
+          <option name="timeStamp" value="172" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -233,11 +305,16 @@
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="cursor.fetchall()" language="Python" />
+        <watch expression="self.passportid" language="Python" />
+        <watch expression="self.user.is_admin and self.passportid == self.user.passport_id" language="Python" />
+        <watch expression="cursor.name" />
+        <watch expression="self.clouds[self.tableWidget.currentRow()-1][0]" language="Python" />
+        <watch expression="self.username.text()" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/untitled1$main.coverage" NAME="main Coverage Results" MODIFIED="1580301716487" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/untitled1$main.coverage" NAME="main Coverage Results" MODIFIED="1580338517875" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/untitled1$dataBase.coverage" NAME="dataBase Coverage Results" MODIFIED="1579726022051" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

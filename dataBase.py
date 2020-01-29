@@ -7,6 +7,8 @@ import psycopg2
 import datetime
 import uuid
 import hashlib
+import random
+import string
 
 """
 tables:
@@ -128,7 +130,7 @@ class Database:
     def check_user(self, passport_id: str) -> list:
         passport_id = int(passport_id)
         cursor = self.connection.cursor()
-        cursor.execute("rollback;")
+        # cursor.execute("rollback;")
         cursor.execute("""
                 select * from users where (users.passport_id = %s);
                 """, [passport_id])
@@ -395,13 +397,12 @@ class Database:
         #     return False
         return record
 
-
-
     def cloud_create_table(self):
         cursor = self.connection.cursor()
         cursor.execute("""
                     create table if not exists cloud(
                     cloud_id serial PRIMARY KEY,
+                    day_number int,
                     daily_price integer,
                     storage_size integer,
                     ram integer,
@@ -425,9 +426,12 @@ class Database:
         self.connection.commit()
         cursor.close()
 
-    def cloud_insert_table(self, cloud_password: str, platform_pk: int, storage_size: int, ram: int, cpu_core: int, cpu_rate: int, bandwidth: int, os_id: int, passport_id: int) -> bool:
+    def cloud_insert_table(self,  platform_pk: int, storage_size: int, ram: int, cpu_core: int,
+                           cpu_rate: int, bandwidth: int, os_id: int, passport_id: int, day_number: int) -> bool:
+        cloud_password = ''.join(random.choice(string.ascii_uppercase) for _ in range(5))
         cursor = self.connection.cursor()
         daily_price = (cpu_core * cpu_rate * 5000) + (ram * 4000) + (storage_size * 2000) + (bandwidth * 1000)
+        total_price = day_number * daily_price
         ssh_salt = uuid.uuid4().hex
         ssh_hash = hashlib.sha256(ssh_salt.encode() + cloud_password.encode()).hexdigest()
         try:
@@ -463,24 +467,41 @@ class Database:
                             end;
                             $$ language plpgsql;
 
+                            CREATE OR REPLACE FUNCTION get_account_balance(input_passport_id integer)
+                                RETURNS int AS $$
+
+                            declare result_data int;
+                            begin
+                                select account_balance
+                                into result_data
+                                from users
+                                where passport_id = input_passport_id;
+                                return result_data;
+                            end;
+                            $$ language plpgsql;
+
                             CREATE OR REPLACE FUNCTION check_platform_data_to_cloud(
                                 platform_pk integer, 
                                 storage_size integer,
                                 ram integer,
                                 cpu_core integer,
                                 cpu_rate integer,
-                                bandwidth integer
+                                bandwidth integer,
+                                passport_id integer,
+                                total_price integer
                             )
                               RETURNS bool AS $$
                             declare platform_data platform_data_type;
+                            declare account_balance_data integer;
                             declare answer bool;
                             begin
                                 platform_data = get_platform_data(platform_pk);
-                                if platform_data.platform_storage_size >= storage_size
-                                    and platform_data.platform_ram >= ram
+                                account_balance_data = get_account_balance(passport_id);
+                                if platform_data.platform_storage_size >= storage_size and platform_data.platform_ram >= ram
                                     and platform_data.platform_cpu_core >= cpu_core
                                     and platform_data.platform_cpu_rate >= cpu_rate
                                     and platform_data.platform_bandwidth >= bandwidth
+                                    and account_balance_data >= total_price
                                     then answer = TRUE;
                                 else answer = FALSE;
                                 end if;
@@ -489,18 +510,25 @@ class Database:
                             $$ LANGUAGE PLPGSQL;
 
                             do $$
+                            declare remain_money integer;
                             begin
-                                if check_platform_data_to_cloud(%s, %s, %s, %s, %s, %s) then 
+                                if check_platform_data_to_cloud(%s, %s, %s, %s, %s, %s, %s, %s) then 
                                     insert into cloud
                                     (platform_pk, storage_size, ram, cpu_core, cpu_rate,
-                                     bandwidth, os_id, passport_id, daily_price, ssh_hash, ssh_salt)
-                                    values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                                     bandwidth, os_id, passport_id, daily_price, ssh_hash, ssh_salt, day_number)
+                                    values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+
+                                    remain_money = get_account_balance(%s) - %s;
+                                    UPDATE users
+                                    SET account_balance = remain_money
+                                    WHERE users.passport_id = %s;
                                 else RAISE EXCEPTION 'error'; 
                                 end if;
                             end;$$;
-                            """, ([platform_pk, storage_size, ram, cpu_core, cpu_rate,
-                                  bandwidth, platform_pk, storage_size, ram, cpu_core, cpu_rate,
-                                  bandwidth, os_id, passport_id, daily_price, ssh_hash, ssh_salt])
+                            """, (platform_pk, storage_size, ram, cpu_core, cpu_rate, bandwidth, passport_id,
+                                  total_price, platform_pk, storage_size, ram, cpu_core, cpu_rate,
+                                  bandwidth, os_id, passport_id, daily_price, ssh_hash, ssh_salt, day_number,
+                                  passport_id, total_price, passport_id)
                            )
             self.connection.commit()
             cursor.close()
@@ -541,12 +569,28 @@ class Database:
         cursor.execute("rollback;")
         cursor.execute("""
                 select * from cloud where cloud.passport_id = %s;
-                """, [passport])
+                 """, [passport])
         self.connection.commit()
         record = cursor.fetchall()
         cursor.close()
 
         return record
+
+    def select_all_cloud(self):
+        cursor = self.connection.cursor()
+        record =[]
+        try:
+            cursor.execute("""
+                                                select * from cloud;
+                                            """,)
+
+            self.connection.commit()
+            record = cursor.fetchall()
+            cursor.close()
+            return record
+        except:
+            cursor.close()
+            return record
 
     def all_platform_os(self,):
         cursor = self.connection.cursor()
@@ -649,6 +693,28 @@ class Database:
             cursor.close()
             return record
 
+    def status_ticket_get_table(self, passport_id: int, is_admin: bool,status) -> list:
+        cursor = self.connection.cursor()
+        create_time = str(datetime.datetime.now()).split(".")[0]
+        record =[]
+        try:
+            if not is_admin:
+                cursor.execute("""
+                                                select * from ticket where passport_id=%s and status=%s;
+                                            """, [passport_id,status])
+            else:
+                cursor.execute("""
+                                                select * from ticket where status=%s;
+                                            """,[status])
+
+            self.connection.commit()
+            record = cursor.fetchall()
+            cursor.close()
+            return record
+        except:
+            cursor.close()
+            return record
+
     def ticket_delete(self, ticket_id: int) -> bool:
         cursor = self.connection.cursor()
         cursor.execute("rollback;")
@@ -686,11 +752,24 @@ class Database:
                     snapshots_id serial PRIMARY KEY,
                     cloud_id int references cloud(cloud_id) on delete cascade,
                     create_time character(30),
-                    sizee int,
+                    sizee int
                     );
                 """)
         self.connection.commit()
         cursor.close()
+
+    def all_snapShot(self,cloud_id):
+        cursor = self.connection.cursor()
+        cursor.execute("rollback;")
+        cursor.execute("""
+                select * from snapshots where cloud_id=%s
+                """, [cloud_id])
+        self.connection.commit()
+        record = list
+        record = cursor.fetchall()
+        cursor.close()
+        return record
+
 
     def snapshots_drop_table(self):
         cursor = self.connection.cursor()
@@ -704,34 +783,28 @@ class Database:
         create_time = str(datetime.datetime.now()).split(".")[0]
         cursor.execute("rollback;")
         try:
-            cursor.execute("""  
+            cursor.execute("""
                                 CREATE OR REPLACE FUNCTION get_size_of_cloud(input_cloud_id int)
-                                RETURNS int AS $$
-                            declare  resultt int;
-                            begin
-                                select storage_size
-                                into result
-                                from cloud
-                                where cloud.cloud_id = input_cloud_id;
-                                return result;
-                            end;
-                            $$ language plpgsql;
-                            
-                            do $$
-                            begin
-                                if check_platform_data_to_cloud(%s, %s, %s, %s, %s, %s) then 
-                                    insert into cloud
-                                    (platform_pk, storage_size, ram, cpu_core, cpu_rate,
-                                     bandwidth, os_id, passport_id, daily_price, ssh_hash, ssh_salt)
-                                    values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-                                else RAISE EXCEPTION 'error'; 
-                                end if;
-                            end;$$;
-                            
-                                insert into snapshots
-                                (cloud_id, create_time, sizee)
-                                values (%s, %s, %s);
-                            """, (cloud_id, create_time)
+                                    RETURNS int AS $$
+                                declare resultt int;
+                                begin
+                                    select storage_size
+                                    into resultt
+                                    from cloud
+                                    where cloud.cloud_id = input_cloud_id;
+                                    return resultt;
+                                end;
+                                $$ language plpgsql;
+
+                                DO $$
+                                DECLARE storage_sizee int;
+                                BEGIN
+                                    storage_sizee = get_size_of_cloud(%s);
+                                    insert into snapshots
+                                    (cloud_id, create_time, sizee)
+                                    values (%s, %s, storage_sizee);
+                                END $$;
+                            """, (cloud_id, cloud_id, create_time)
                            )
             self.connection.commit()
             cursor.close()
@@ -745,7 +818,7 @@ class Database:
         cursor.execute("rollback;")
         cursor.execute("""
                         delete from snapshots where snapshots.snapshots_id = %s RETURNING snapshots.snapshots_id;
-                        """, (snapshots_id,))
+                        """, [snapshots_id])
         self.connection.commit()
         record = cursor.fetchall()
         cursor.close()

@@ -1,4 +1,5 @@
 import random
+import smtplib
 import string
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -48,6 +49,7 @@ class Ui_Form(object):
         self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.password)
         self.forgot_btn = QtWidgets.QCommandLinkButton(self.verticalLayoutWidget)
         self.forgot_btn.setObjectName("forgot_btn")
+        self.forgot_btn.clicked.connect(lambda: self.password_mail())
         self.formLayout.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.forgot_btn)
         self.is_admin = QtWidgets.QCheckBox(self.verticalLayoutWidget)
         self.is_admin.setObjectName("is_admin")
@@ -402,7 +404,7 @@ class Ui_Form(object):
         self.formLayout_6.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.line_3)
         self.platform_create_2 = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.platform_create_2.setObjectName("platform_create_2")
-        self.platform_create_2.clicked.connect(lambda: self.create_cloud())
+        # self.platform_create_2.clicked.connect(lambda: self.create_cloud())
         self.formLayout_6.setWidget(9, QtWidgets.QFormLayout.SpanningRole, self.platform_create_2)
         self.update_platform = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.update_platform.setObjectName("update_platform")
@@ -452,6 +454,11 @@ class Ui_Form(object):
         self.verticalLayout_6.addLayout(self.horizontalLayout_10)
         self.ticket_status_select = QtWidgets.QComboBox(self.horizontalLayoutWidget)
         self.ticket_status_select.setObjectName("ticket_status_select")
+        self.ticket_status_select.addItem("All")
+        self.ticket_status_select.addItem("waiting")
+        self.ticket_status_select.addItem("Answered")
+        self.ticket_status_select.addItem("Rejected")
+        self.ticket_status_select.currentIndexChanged.connect(lambda: self.selectionchangeComboBox())
         self.verticalLayout_6.addWidget(self.ticket_status_select)
         self.label_25 = QtWidgets.QLabel(self.horizontalLayoutWidget)
         self.label_25.setObjectName("label_25")
@@ -527,15 +534,18 @@ class Ui_Form(object):
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.commandLinkButton = QtWidgets.QCommandLinkButton(self.verticalLayoutWidget_7)
         self.commandLinkButton.setObjectName("commandLinkButton")
+        self.commandLinkButton.clicked.connect(lambda: self.navigate_last_page())
         self.verticalLayout_8.addWidget(self.commandLinkButton)
-        self.snapshot_table = QtWidgets.QTableView(self.verticalLayoutWidget_7)
+        self.snapshot_table = QtWidgets.QTableWidget(self.verticalLayoutWidget_7)
         self.snapshot_table.setObjectName("snapshot_table")
         self.verticalLayout_8.addWidget(self.snapshot_table)
         self.take_snapshot = QtWidgets.QPushButton(self.verticalLayoutWidget_7)
         self.take_snapshot.setObjectName("take_snapshot")
+        self.take_snapshot.clicked.connect(lambda: self.add_snapshot_function())
         self.verticalLayout_8.addWidget(self.take_snapshot)
         self.delete_snapshot = QtWidgets.QPushButton(self.verticalLayoutWidget_7)
         self.delete_snapshot.setObjectName("delete_snapshot")
+        self.delete_snapshot.clicked.connect(lambda: self.delete_snapshot_table())
         self.verticalLayout_8.addWidget(self.delete_snapshot)
         self.stackedWidget.addWidget(self.page_9)
         self.page_10 = QtWidgets.QWidget()
@@ -554,15 +564,19 @@ class Ui_Form(object):
         self.user_table.setObjectName("user_table")
         self.user_table.setColumnCount(0)
         self.user_table.setRowCount(0)
+        # self.user_table.itemSelectionChanged.connect(lambda: self.user_table_select)
         self.verticalLayout_9.addWidget(self.user_table)
         self.user_platform = QtWidgets.QPushButton(self.verticalLayoutWidget_8)
         self.user_platform.setObjectName("user_platform")
+        self.user_platform.clicked.connect(lambda: self.admin_user_platforms())
         self.verticalLayout_9.addWidget(self.user_platform)
         self.user_ticket = QtWidgets.QPushButton(self.verticalLayoutWidget_8)
         self.user_ticket.setObjectName("user_ticket")
+        self.user_ticket.clicked.connect(lambda: self.admin_user_ticket())
         self.verticalLayout_9.addWidget(self.user_ticket)
         self.update_user = QtWidgets.QPushButton(self.verticalLayoutWidget_8)
         self.update_user.setObjectName("update_user")
+        self.update_user.clicked.connect(lambda: self.admin_update_user())
         self.verticalLayout_9.addWidget(self.update_user)
         self.stackedWidget.addWidget(self.page_10)
         self.page_11 = QtWidgets.QWidget()
@@ -683,6 +697,7 @@ class Ui_Form(object):
         self.verticalLayout_13.setObjectName("verticalLayout_13")
         self.commandLinkButton_3 = QtWidgets.QCommandLinkButton(self.verticalLayoutWidget_10)
         self.commandLinkButton_3.setObjectName("commandLinkButton_3")
+        self.commandLinkButton_3.clicked.connect(lambda: self.navigate_last_page())
         self.verticalLayout_13.addWidget(self.commandLinkButton_3)
         self.tableWidget = QtWidgets.QTableWidget(self.verticalLayoutWidget_10)
         self.tableWidget.setObjectName("tableWidget")
@@ -693,16 +708,19 @@ class Ui_Form(object):
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
         self.delete_cloud = QtWidgets.QPushButton(self.verticalLayoutWidget_10)
         self.delete_cloud.setObjectName("delete_cloud")
+        self.delete_cloud.clicked.connect(lambda: self.delete_cloud_function())
         self.horizontalLayout_14.addWidget(self.delete_cloud)
         self.snapshot = QtWidgets.QPushButton(self.verticalLayoutWidget_10)
         self.snapshot.setObjectName("snapshot")
+        self.snapshot.clicked.connect(lambda: self.navigate_snapshot_screen())
         self.horizontalLayout_14.addWidget(self.snapshot)
         self.cloud_update = QtWidgets.QPushButton(self.verticalLayoutWidget_10)
         self.cloud_update.setObjectName("cloud_update")
+        self.cloud_update.clicked.connect(lambda: self.navigate_select_os_platform(True))
         self.horizontalLayout_14.addWidget(self.cloud_update)
         self.cloud_create = QtWidgets.QPushButton(self.verticalLayoutWidget_10)
         self.cloud_create.setObjectName("cloud_create")
-        self.cloud_create.clicked.connect(lambda: self.navigate_create_platform())
+        self.cloud_create.clicked.connect(lambda: self.navigate_select_os_platform(False))
         self.horizontalLayout_14.addWidget(self.cloud_create)
         self.verticalLayout_13.addLayout(self.horizontalLayout_14)
         self.stackedWidget.addWidget(self.page_12)
@@ -716,6 +734,7 @@ class Ui_Form(object):
         self.verticalLayout_14.setObjectName("verticalLayout_14")
         self.commandLinkButton_4 = QtWidgets.QCommandLinkButton(self.verticalLayoutWidget_11)
         self.commandLinkButton_4.setObjectName("commandLinkButton_4")
+        self.commandLinkButton_4.clicked.connect(lambda: self.navigate_last_page())
         self.verticalLayout_14.addWidget(self.commandLinkButton_4)
         self.tableWidget_2 = QtWidgets.QTableWidget(self.verticalLayoutWidget_11)
         self.tableWidget_2.setObjectName("tableWidget_2")
@@ -726,6 +745,7 @@ class Ui_Form(object):
         self.horizontalLayout_15.setObjectName("horizontalLayout_15")
         self.pushButton = QtWidgets.QPushButton(self.verticalLayoutWidget_11)
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(lambda: self.navigate_new_cloud())
         self.horizontalLayout_15.addWidget(self.pushButton)
         self.verticalLayout_14.addLayout(self.horizontalLayout_15)
         self.stackedWidget.addWidget(self.page_13)
@@ -737,44 +757,52 @@ class Ui_Form(object):
         self.formLayout_8 = QtWidgets.QFormLayout(self.formLayoutWidget_2)
         self.formLayout_8.setContentsMargins(0, 0, 0, 0)
         self.formLayout_8.setObjectName("formLayout_8")
+        self.commandLinkButton_5 = QtWidgets.QCommandLinkButton(self.formLayoutWidget_2)
+        self.commandLinkButton_5.setObjectName("commandLinkButton_5")
+        self.commandLinkButton_5.clicked.connect(lambda: self.navigate_last_page())
+        self.formLayout_8.setWidget(0, QtWidgets.QFormLayout.SpanningRole, self.commandLinkButton_5)
+        spacerItem9 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.formLayout_8.setItem(1, QtWidgets.QFormLayout.FieldRole, spacerItem9)
         self.label_42 = QtWidgets.QLabel(self.formLayoutWidget_2)
         self.label_42.setObjectName("label_42")
         self.formLayout_8.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_42)
         self.cloud_ram = QtWidgets.QLineEdit(self.formLayoutWidget_2)
         self.cloud_ram.setObjectName("cloud_ram")
         self.formLayout_8.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.cloud_ram)
-        self.cloud_core = QtWidgets.QLineEdit(self.formLayoutWidget_2)
-        self.cloud_core.setObjectName("cloud_core")
-        self.formLayout_8.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.cloud_core)
-        self.cloud_rate = QtWidgets.QLineEdit(self.formLayoutWidget_2)
-        self.cloud_rate.setObjectName("cloud_rate")
-        self.formLayout_8.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.cloud_rate)
-        self.cloud_storage = QtWidgets.QLineEdit(self.formLayoutWidget_2)
-        self.cloud_storage.setObjectName("cloud_storage")
-        self.formLayout_8.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.cloud_storage)
-        self.cloud_bandwidth = QtWidgets.QLineEdit(self.formLayoutWidget_2)
-        self.cloud_bandwidth.setObjectName("cloud_bandwidth")
-        self.formLayout_8.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.cloud_bandwidth)
         self.label_43 = QtWidgets.QLabel(self.formLayoutWidget_2)
         self.label_43.setObjectName("label_43")
         self.formLayout_8.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_43)
+        self.cloud_core = QtWidgets.QLineEdit(self.formLayoutWidget_2)
+        self.cloud_core.setObjectName("cloud_core")
+        self.formLayout_8.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.cloud_core)
         self.label_44 = QtWidgets.QLabel(self.formLayoutWidget_2)
         self.label_44.setObjectName("label_44")
         self.formLayout_8.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.label_44)
+        self.cloud_rate = QtWidgets.QLineEdit(self.formLayoutWidget_2)
+        self.cloud_rate.setObjectName("cloud_rate")
+        self.formLayout_8.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.cloud_rate)
         self.label_45 = QtWidgets.QLabel(self.formLayoutWidget_2)
         self.label_45.setObjectName("label_45")
         self.formLayout_8.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.label_45)
+        self.cloud_storage = QtWidgets.QLineEdit(self.formLayoutWidget_2)
+        self.cloud_storage.setObjectName("cloud_storage")
+        self.formLayout_8.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.cloud_storage)
         self.label_46 = QtWidgets.QLabel(self.formLayoutWidget_2)
         self.label_46.setObjectName("label_46")
         self.formLayout_8.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.label_46)
+        self.cloud_bandwidth = QtWidgets.QLineEdit(self.formLayoutWidget_2)
+        self.cloud_bandwidth.setObjectName("cloud_bandwidth")
+        self.formLayout_8.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.cloud_bandwidth)
+        self.label_47 = QtWidgets.QLabel(self.formLayoutWidget_2)
+        self.label_47.setObjectName("label_47")
+        self.formLayout_8.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.label_47)
         self.cloud_create_2 = QtWidgets.QPushButton(self.formLayoutWidget_2)
         self.cloud_create_2.setObjectName("cloud_create_2")
-        self.formLayout_8.setWidget(7, QtWidgets.QFormLayout.SpanningRole, self.cloud_create_2)
-        self.commandLinkButton_5 = QtWidgets.QCommandLinkButton(self.formLayoutWidget_2)
-        self.commandLinkButton_5.setObjectName("commandLinkButton_5")
-        self.formLayout_8.setWidget(0, QtWidgets.QFormLayout.SpanningRole, self.commandLinkButton_5)
-        spacerItem9 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.formLayout_8.setItem(1, QtWidgets.QFormLayout.FieldRole, spacerItem9)
+        self.cloud_create_2.clicked.connect(lambda: self.create_new_cloud())
+        self.formLayout_8.setWidget(8, QtWidgets.QFormLayout.SpanningRole, self.cloud_create_2)
+        self.cloud_day = QtWidgets.QLineEdit(self.formLayoutWidget_2)
+        self.cloud_day.setObjectName("cloud_day")
+        self.formLayout_8.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.cloud_day)
         self.stackedWidget.addWidget(self.page_14)
 
         self.retranslateUi(Form)
@@ -833,7 +861,7 @@ class Ui_Form(object):
         self.label_21.setText(_translate("Form", "Account Balance"))
         self.label_23.setText(_translate("Form", "password"))
         self.signUp_2.setText(_translate("Form", "Update"))
-        self.signUp_2.clicked.connect(lambda: self.update_user(self.user.is_admin))
+        self.signUp_2.clicked.connect(lambda: self.update_user_function(self.user.is_admin))
         self.settings_delete.setText(_translate("Form", "Delete Account"))
         self.label_29.setText(_translate("Form", "Os"))
         self.windows_3.setText(_translate("Form", "windows"))
@@ -921,7 +949,18 @@ class Ui_Form(object):
         stack.append(self.stackedWidget.currentIndex())
         self.stackedWidget.setCurrentIndex(2)
 
+    def password_mail(self):
+        # record = self.data_base.check_user(passport_id=self.username.text())
+        # server = smtplib.SMTP('smtp.gmail.com', 587)
+        # server.starttls()
+        # server.login("kmmm5793@gmail.com", "haahhaha")
+        # msg = "\nYour password is : %s! \n" % (record[0][4])
+        # server.sendmail("zmmmken@gmail.com", "kmmm5793@gmail.com", msg)
+        # server.quit()
+        print("password sent")
+
     def navigate_last_page(self):
+        self.passportid = self.user.passport_id
         self.stackedWidget.setCurrentIndex(stack.pop())
 
     def navigate_tickets(self):
@@ -938,31 +977,81 @@ class Ui_Form(object):
         # todo database
         stack.append(self.stackedWidget.currentIndex())
         self.stackedWidget.setCurrentIndex(11)
-        self.select_cloud(passport_id=passport_id)
+        # todo
+        self.select_cloud(passport_id=self.passportid)
         self.update_cloud_table()
 
     def navigate_add_ticket(self):
         stack.append(self.stackedWidget.currentIndex())
         self.stackedWidget.setCurrentIndex(7)
 
-    def navigate_create_platform(self):
-        stack.append(self.stackedWidget.currentIndex())
-        self.stackedWidget.setCurrentIndex(0)
-
     def navigate_update_platform(self):
         self.get_platform()
         stack.append(self.stackedWidget.currentIndex())
         self.stackedWidget.setCurrentIndex(10)
 
-    def navigate_create_platform(self):
-        stack.append(self.stackedWidget.currentIndex())
-        self.stackedWidget.setCurrentIndex(12)
+    def navigate_select_os_platform(self, isUpdate: bool):
+        if isUpdate:
+            if self.tableWidget.currentRow()>0:
+                self.is_update = isUpdate
+                stack.append(self.stackedWidget.currentIndex())
+                self.stackedWidget.setCurrentIndex(12)
+        else:
+            self.is_update = isUpdate
+            stack.append(self.stackedWidget.currentIndex())
+            self.stackedWidget.setCurrentIndex(12)
+
         record = self.data_base.all_platform_os()
-        self.tableWidget_2.setRowCount(len(record))
+        self.all_platforms = record
+        self.tableWidget_2.setRowCount(len(record)+1)
         self.tableWidget_2.setColumnCount(8)
+        # os.os_id,os.os_name,platform.platform_pk,storage_size,ram,cpu_core,cpu_rate,bandwidth
+        self.tableWidget_2.setItem(0, 0, QtWidgets.QTableWidgetItem('os id'))
+        self.tableWidget_2.setItem(0, 1, QtWidgets.QTableWidgetItem('os name'))
+        self.tableWidget_2.setItem(0, 2, QtWidgets.QTableWidgetItem('platform id'))
+        self.tableWidget_2.setItem(0, 3, QtWidgets.QTableWidgetItem('storage size'))
+        self.tableWidget_2.setItem(0, 4, QtWidgets.QTableWidgetItem('ram'))
+        self.tableWidget_2.setItem(0, 5, QtWidgets.QTableWidgetItem('cpu core'))
+        self.tableWidget_2.setItem(0, 6, QtWidgets.QTableWidgetItem('cpu rate'))
+        self.tableWidget_2.setItem(0, 7, QtWidgets.QTableWidgetItem('bandwidth'))
         for i in range(len(record)):
             for j in range(8):
-                self.tableWidget_2.setItem(i, j, QtWidgets.QTableWidgetItem(str(record[i][j])))
+                self.tableWidget_2.setItem(i+1, j, QtWidgets.QTableWidgetItem(str(record[i][j])))
+
+    def navigate_new_cloud(self):
+        if self.tableWidget_2.currentRow()>0:
+            stack.append(self.stackedWidget.currentIndex())
+            self.stackedWidget.setCurrentIndex(13)
+
+    def navigate_snapshot_screen(self):
+        if self.tableWidget.currentRow() > 0 :
+            self.all_snapshot()
+            stack.append(self.stackedWidget.currentIndex())
+            self.stackedWidget.setCurrentIndex(8)
+
+    def create_new_cloud(self):
+        index = self.tableWidget_2.currentRow() -1
+        os_id = int(self.all_platforms[index][0])
+        platform_id = int(self.all_platforms[index][2])
+        core = int(self.cloud_core.text())
+        rate = int(self.cloud_rate.text())
+        ram = int(self.cloud_ram.text())
+        storage = int(self.cloud_storage.text())
+        bandwidth = int(self.cloud_bandwidth.text())
+        day = int(self.cloud_day.text())
+        if not self.is_update:
+            passprt_id = int(self.passportid)
+            register = self.data_base.cloud_insert_table(platform_pk=platform_id, storage_size=storage, ram=ram, cpu_core=core, cpu_rate=rate, bandwidth=bandwidth, os_id=os_id, passport_id=passprt_id,day_number=day)
+            if register:
+                stack.pop()
+                stack.pop()
+                self.navigate_update_cloud(is_admin=self.user.is_admin, passport_id=passprt_id)
+
+    def delete_cloud_function(self):
+        if self.tableWidget.currentRow()>0:
+            self.data_base.cloud_delete(self.clouds[self.tableWidget.currentRow()-1][0])
+            self.select_cloud(passport_id=self.user.passport_id)
+            self.update_cloud_table()
 
     def sign_out(self):
         stack.clear()
@@ -983,25 +1072,33 @@ class Ui_Form(object):
         if len(record) > 0:
             self.create_user(result=record, is_admin=admin)
             if self.user.password == password1:
+                self.passportid = self.user.passport_id
                 self.stackedWidget.setCurrentIndex(3)
 
     def delete_user(self):
-        delete = self.data_base.user_delete(self.user.passport_id)
-        if delete == True:
+        delete = self.data_base.user_delete(self.passportid)
+        if delete:
             stack.clear()
             self.stackedWidget.setCurrentIndex(0)
 
-    def update_user(self, is_admin: bool):
+    def update_user_function(self, is_admin: bool):
         name = self.settings_name.text()
         family = self.settings_family.text()
         account = self.settings_balance.text()
         passport_id = self.settings_passportid.text()
         email = self.settings_email.text()
         password = self.user.password
-        self.data_base.update_user(first_name=name, last_name=family, passport_id=passport_id, email=email,
-                                   password=password, account_balance=account, is_admin=is_admin)
-        record = self.data_base.check_user(passport_id=passport_id)
-        self.create_user(record, self.user.is_admin)
+
+        if is_admin==False or self.passportid!=self.user.passport_id:
+            self.data_base.update_user(first_name=name, last_name=family, passport_id=self.passportid, email=email,
+                                       password=password, account_balance=account, is_admin=False)
+            record = self.data_base.check_user(passport_id=self.passportid)
+        if is_admin and self.passportid ==self.user.passport_id:
+            self.data_base.update_user(first_name=name, last_name=family, passport_id=self.passportid, email=email,
+                                       password=password, account_balance=account, is_admin=True)
+            record = self.data_base.admin_get_table(passport_id=self.passportid)
+            self.create_user(record, self.user.is_admin)
+
         self.navigate_last_page()
 
     def register(self):
@@ -1020,10 +1117,12 @@ class Ui_Form(object):
             record = self.data_base.check_user(passport_id=passport_id)
             if len(record) > 0:
                 self.create_user(record, is_admin=self.is_admin)
+                self.passportid = passport_id
                 self.stackedWidget.setCurrentIndex(3)
         else:
             self.data_base.admin_insert_table(first_name=name, last_name=family_name, email=email,
                                               passport_id=passport_id, password=password)
+            self.passportid = passport_id
             self.stackedWidget.setCurrentIndex(3)
 
     def register_admin_select(self):
@@ -1073,14 +1172,30 @@ class Ui_Form(object):
         self.get_all_tickets()
 
     def get_all_tickets(self):
-        record = self.data_base.ticket_get_table(self.user.passport_id, self.user.is_admin)
+
+        if self.is_admin and self.passportid == self.user.passport_id:
+            record = self.data_base.ticket_get_table(self.passportid, True)
+        else:
+            record = self.data_base.ticket_get_table(self.passportid, False)
         self.tickets = record
-        self.ticket_table.setColumnCount(len(record[0]))
+        self.ticket_table.setColumnCount(6)
         self.ticket_table.setRowCount(len(record))
         for i in range(len(record)):
             for j in range(len(record[i])):
                 self.ticket_table.setItem(i, j, QtWidgets.QTableWidgetItem(str(record[i][len(record[i]) - j - 1])))
         # self.ticket_table.
+
+    def get_status_ticket(self,status):
+        if self.is_admin and self.passportid==self.user.passport_id:
+            record = self.data_base.status_ticket_get_table(self.passportid, True,status)
+        else:
+            record = self.data_base.status_ticket_get_table(self.passportid, False,status)
+        self.tickets = record
+        self.ticket_table.setColumnCount(6)
+        self.ticket_table.setRowCount(len(record))
+        for i in range(len(record)):
+            for j in range(len(record[i])):
+                self.ticket_table.setItem(i, j, QtWidgets.QTableWidgetItem(str(record[i][len(record[i]) - j - 1])))
 
     def ticket_selected(self):
         print(self.ticket_table.currentRow())
@@ -1141,16 +1256,23 @@ class Ui_Form(object):
 
         self.data_base.update_ticket(ticket[0], ticket[1], self.ticket_show_answer.toPlainText(),
                                      self.ticket_show_question.toPlainText(), status=staus)
-        self.get_all_tickets()
+        self.selectionchangeComboBox()
 
     def get_all_user(self):
         record = self.data_base.get_all_user()
         self.all_user = record
-        self.user_table.setColumnCount(len(record))
+        self.user_table.setColumnCount(7)
         self.user_table.setRowCount(len(record[0]))
+        self.user_table.setItem(0, 0, QtWidgets.QTableWidgetItem("first name"))
+        self.user_table.setItem(0, 1, QtWidgets.QTableWidgetItem("last name"))
+        self.user_table.setItem(0, 2, QtWidgets.QTableWidgetItem("passport id"))
+        self.user_table.setItem(0, 3, QtWidgets.QTableWidgetItem("email"))
+        self.user_table.setItem(0, 4, QtWidgets.QTableWidgetItem("password"))
+        self.user_table.setItem(0, 5, QtWidgets.QTableWidgetItem("join date"))
+        self.user_table.setItem(0, 6, QtWidgets.QTableWidgetItem("account balance"))
         for i in range(len(record)):
             for j in range(len(record[i])):
-               self.user_table.setItem(i, j, QtWidgets.QTableWidgetItem(str(record[i][len(record[i]) - j - 1])))
+               self.user_table.setItem(i+1, j, QtWidgets.QTableWidgetItem(str(record[i][j])))
 
     def get_os(self):
         record = self.data_base.get_os()
@@ -1174,41 +1296,34 @@ class Ui_Form(object):
                                              bandwidth=bandWidth)
         self.navigate_last_page()
 
-    def create_cloud(self):
-        # todo handel os_id
-        letters = string.ascii_lowercase  # + string.ascii_uppercase
-        ssh = ''.join(random.choice(letters) for i in range(7))
-        storage = int(self.update_storage.text())
-        ram = int(self.ram_update.text())
-        core = int(self.cpu_core_update.text())
-        rate = int(self.cpu_core_update.text())
-        bandwidth = int(self.band_width_update.text())
-        self.data_base.cloud_insert_table(cloud_password=ssh, platform_pk=1, storage_size=storage, ram=ram,
-                                          cpu_core=core, cpu_rate=rate, os_id=2, bandwidth=bandwidth,
-                                          passport_id=int(self.user.passport_id))
-
-    def select_cloud(self,passport_id):
-        self.clouds = self.data_base.select_cloud(passport_id)
+    def select_cloud(self, passport_id):
+        if self.user.is_admin and self.passportid == self.user.passport_id:
+            self.clouds=[]
+            self.clouds = self.data_base.select_all_cloud()
+        else:
+            self.clouds=[]
+            self.clouds = self.data_base.select_cloud(passport_id)
 
     def update_cloud_table(self):
-        self.tableWidget.setColumnCount(13)
+        self.tableWidget.setColumnCount(14)
         self.tableWidget.setRowCount(len(self.clouds)+1)
         self.tableWidget.setItem(0,0, QtWidgets.QTableWidgetItem("cloud id"))
-        self.tableWidget.setItem(0,1, QtWidgets.QTableWidgetItem("daily price"))
-        self.tableWidget.setItem(0,2, QtWidgets.QTableWidgetItem("storage size"))
-        self.tableWidget.setItem(0,3, QtWidgets.QTableWidgetItem("ram"))
-        self.tableWidget.setItem(0,4, QtWidgets.QTableWidgetItem("cpu core"))
-        self.tableWidget.setItem(0,5, QtWidgets.QTableWidgetItem("cpu cpu rate"))
-        self.tableWidget.setItem(0,6, QtWidgets.QTableWidgetItem("band width"))
-        self.tableWidget.setItem(0,7, QtWidgets.QTableWidgetItem("create date"))
-        self.tableWidget.setItem(0,8, QtWidgets.QTableWidgetItem("ssh-hash"))
-        self.tableWidget.setItem(0,9, QtWidgets.QTableWidgetItem("ssh-salt"))
-        self.tableWidget.setItem(0,10, QtWidgets.QTableWidgetItem("os-id"))
-        self.tableWidget.setItem(0,11, QtWidgets.QTableWidgetItem("passport id"))
-        self.tableWidget.setItem(0,12, QtWidgets.QTableWidgetItem("platform_pk"))
+        self.tableWidget.setItem(0,1, QtWidgets.QTableWidgetItem("day number"))
+        self.tableWidget.setItem(0,2, QtWidgets.QTableWidgetItem("daily price"))
+        self.tableWidget.setItem(0,3, QtWidgets.QTableWidgetItem("storage size"))
+        self.tableWidget.setItem(0,4, QtWidgets.QTableWidgetItem("ram"))
+        self.tableWidget.setItem(0,5, QtWidgets.QTableWidgetItem("cpu core"))
+        self.tableWidget.setItem(0,6, QtWidgets.QTableWidgetItem("cpu cpu rate"))
+        self.tableWidget.setItem(0,7, QtWidgets.QTableWidgetItem("band width"))
+        self.tableWidget.setItem(0,8, QtWidgets.QTableWidgetItem("create date"))
+        self.tableWidget.setItem(0,9, QtWidgets.QTableWidgetItem("ssh-hash"))
+        self.tableWidget.setItem(0,10, QtWidgets.QTableWidgetItem("ssh-salt"))
+        self.tableWidget.setItem(0,11, QtWidgets.QTableWidgetItem("os-id"))
+        self.tableWidget.setItem(0,12, QtWidgets.QTableWidgetItem("passport id"))
+        self.tableWidget.setItem(0,13, QtWidgets.QTableWidgetItem("platform_pk"))
         for i in range(len(self.clouds)):
             for j in range(13):
-                self.tableWidget.setItem(i, j, QtWidgets.QTableWidgetItem(str(self.clouds[i][j])))
+                self.tableWidget.setItem(i+1, j, QtWidgets.QTableWidgetItem(str(self.clouds[i][j])))
 
     def select_os(self, i):
         print(self.os_list[i].name)
@@ -1262,6 +1377,75 @@ class Ui_Form(object):
         self.data_base.update_platform(ram, core ,rate, storage, bandwidth, platform_pk)
         self.get_platform()
 
+    def all_snapshot(self):
+        self.snapshotR = self.data_base.all_snapShot(self.clouds[self.tableWidget.currentRow()-1][0])
+        self.update_snapshot_table()
+
+    def add_snapshot_function(self):
+        self.data_base.snapshots_insert_table(self.clouds[self.tableWidget.currentRow()-1][0])
+        self.all_snapshot()
+
+    def update_snapshot_table(self):
+        self.snapshot_table.setRowCount(len(self.snapshotR)+1)
+        self.snapshot_table.setColumnCount(4)
+        self.snapshot_table.setItem(0, 0, QtWidgets.QTableWidgetItem("snapshot_id"))
+        self.snapshot_table.setItem(0, 1, QtWidgets.QTableWidgetItem("cloud_id"))
+        self.snapshot_table.setItem(0, 2, QtWidgets.QTableWidgetItem("create time"))
+        self.snapshot_table.setItem(0, 3, QtWidgets.QTableWidgetItem("size"))
+        for i in range(len(self.snapshotR)):
+            for j in range(4):
+                self.snapshot_table.setItem(i+1, j, QtWidgets.QTableWidgetItem(str(self.snapshotR[i][j])))
+
+    def delete_snapshot_table(self):
+        if self.snapshot_table.currentRow()>0:
+            self.data_base.snapshots_delete(self.snapshotR[self.snapshot_table.currentRow()-1][0])
+            self.all_snapshot()
+
+    def admin_user_platforms(self):
+        index = self.user_table.currentRow()
+        if index > 0:
+            self.passportid = self.all_user[index-1][2]
+
+        self.navigate_update_cloud(is_admin=self.user.is_admin, passport_id=self.passportid)
+
+    def admin_user_ticket(self):
+        index = self.user_table.currentRow()
+        if index > 0:
+            self.passportid = self.all_user[index-1][2]
+
+        self.navigate_tickets()
+
+    def admin_update_user(self):
+
+        index = self.user_table.currentRow()
+
+        if index>0:
+            user = self.all_user[index - 1]
+            self.settings_name.setText(user[0])
+            self.settings_family.setText(user[1])
+            self.settings_balance.setText(str(user[5]))
+            self.settings_passportid.setText(str(user[2]))
+            self.settings_email.setText(user[3])
+            self.update_user_function(is_admin=True)
+            self.passportid = user[2]
+        else:
+            self.settings_name.setText(self.user.last_name)
+            self.settings_family.setText(self.user.last_name)
+            self.settings_balance.setText(str(self.user.account_balance))
+            self.settings_passportid.setText(str(self.user.passport_id))
+            self.settings_email.setText(self.user.email)
+        self.navigate_settings(is_admin=self.user.is_admin)
+
+
+
+    def selectionchangeComboBox(self):
+        index = self.ticket_status_select.currentIndex()
+        if index == 0:
+            self.get_all_tickets()
+        else:
+            self.get_status_ticket(status=index-1)
+        # print("stetst")
+
     def __init__(self):
         self.data_base = Database()
         self.user = User(first_name="", last_name="", passport_id=0, is_admin=False, email="", join_date="",
@@ -1272,6 +1456,8 @@ class Ui_Form(object):
         # for show all platform
         self.operating_system1: list[QtWidgets.QRadioButton]
         self.platforms = list()
+        self.passportid =0
+
 
 
 if __name__ == "__main__":
