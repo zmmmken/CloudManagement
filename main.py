@@ -1,7 +1,11 @@
+import random
+import string
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from dataBase import Database
 from operating_system import OperatingSystem
+from platformdata import PlatformData
 from user import User
 
 stack = []
@@ -149,14 +153,16 @@ class Ui_Form(object):
         self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_10)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        #create new platform
-        for i in range(len(self.os_list)):
-            operating = QtWidgets.QRadioButton(self.verticalLayoutWidget_3)
-            operating.setChecked(False)
-            operating.setObjectName(self.os_list[i].name)
-            operating.setText(self.os_list[i].name)
-            self.horizontalLayout.addWidget(operating)
-            self.operating_system.append(operating)
+        # create new platform
+
+        # for i in range(len(self.os_list)):
+        #     operating = QtWidgets.QRadioButton(self.verticalLayoutWidget_3)
+        #     operating.setChecked(False)
+        #     operating.setObjectName(self.os_list[i].name)
+        #     operating.setText(self.os_list[i].name)
+        #     operating.clicked.connect(lambda: self.select_os(i))
+        #     self.horizontalLayout.addWidget(operating[i])
+
         self.formLayout_3.setLayout(1, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -189,17 +195,30 @@ class Ui_Form(object):
         self.band_width.setObjectName("band_width")
         self.formLayout_3.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.band_width)
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.formLayout_3.setItem(6, QtWidgets.QFormLayout.FieldRole, spacerItem2)
+        self.formLayout_3.setItem(7, QtWidgets.QFormLayout.FieldRole, spacerItem2)
         spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.formLayout_3.setItem(7, QtWidgets.QFormLayout.FieldRole, spacerItem3)
+        self.formLayout_3.setItem(8, QtWidgets.QFormLayout.FieldRole, spacerItem3)
         self.line = QtWidgets.QFrame(self.verticalLayoutWidget_3)
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
-        self.formLayout_3.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.line)
+        self.formLayout_3.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.line)
         self.platform_create = QtWidgets.QPushButton(self.verticalLayoutWidget_3)
         self.platform_create.setObjectName("platform_create")
-        self.formLayout_3.setWidget(9, QtWidgets.QFormLayout.SpanningRole, self.platform_create)
+        self.platform_create.clicked.connect(lambda: self.create_platform())
+        self.formLayout_3.setWidget(10, QtWidgets.QFormLayout.SpanningRole, self.platform_create)
+        self.storage_2 = QtWidgets.QLineEdit(self.verticalLayoutWidget_3)
+        self.storage_2.setObjectName("storage_2")
+        self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.storage_2)
+        self.storage = QtWidgets.QLabel(self.verticalLayoutWidget_3)
+        self.storage.setObjectName("storage")
+        self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.storage)
+        self.verticalLayout_3.addLayout(self.formLayout_3)
+        # self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.storage_label)
+        self.update_platform_screen = QtWidgets.QPushButton(self.verticalLayoutWidget_3)
+        self.update_platform_screen.setObjectName("update_platform_screen")
+        self.update_platform_screen.clicked.connect(lambda: self.navigate_update_platform())
+        self.formLayout_3.setWidget(11, QtWidgets.QFormLayout.SpanningRole, self.update_platform_screen)
         self.verticalLayout_3.addLayout(self.formLayout_3)
         self.stackedWidget.addWidget(self.page_3)
         self.page_4 = QtWidgets.QWidget()
@@ -212,7 +231,7 @@ class Ui_Form(object):
         self.gridLayout.setObjectName("gridLayout")
         self.all_platform_page = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.all_platform_page.setObjectName("all_platform_page")
-        self.all_platform_page.clicked.connect(lambda: self.navigate_update_platform(self.user.is_admin))
+        self.all_platform_page.clicked.connect(lambda: self.navigate_update_cloud(self.user.is_admin,passport_id=self.user.passport_id))
         self.gridLayout.addWidget(self.all_platform_page, 2, 0, 1, 1)
         self.create_platform_page = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.create_platform_page.setObjectName("create_platform_page")
@@ -323,25 +342,25 @@ class Ui_Form(object):
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
 
-        for i in self.os_list:
-            operating = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
-            operating.setChecked(False)
-            operating.setObjectName(i.name)
-            operating.setText(i.name)
-            self.horizontalLayout_8.addWidget(operating)
-            self.operating_system1.append(operating)
+        # for i in self.os_list:
+        #     operating = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
+        #     operating.setChecked(False)
+        #     operating.setObjectName(i.name)
+        #     operating.setText(i.name)
+        #     self.horizontalLayout_8.addWidget(operating)
+        #     self.operating_system1.append(operating)
         #
-        # self.windows_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
-        # self.windows_3.setChecked(False)
-        # self.windows_3.setObjectName("windows_3")
-        # self.horizontalLayout_8.addWidget(self.windows_3)
-        # self.linux_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
-        # self.linux_3.setChecked(True)
-        # self.linux_3.setObjectName("linux_3")
-        # self.horizontalLayout_8.addWidget(self.linux_3)
-        # self.mac_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
-        # self.mac_3.setObjectName("mac_3")
-        # self.horizontalLayout_8.addWidget(self.mac_3)
+        self.windows_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
+        self.windows_3.setChecked(False)
+        self.windows_3.setObjectName("windows_3")
+        self.horizontalLayout_8.addWidget(self.windows_3)
+        self.linux_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
+        self.linux_3.setChecked(True)
+        self.linux_3.setObjectName("linux_3")
+        self.horizontalLayout_8.addWidget(self.linux_3)
+        self.mac_3 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
+        self.mac_3.setObjectName("mac_3")
+        self.horizontalLayout_8.addWidget(self.mac_3)
         self.formLayout_6.setLayout(1, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_8)
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
@@ -383,6 +402,7 @@ class Ui_Form(object):
         self.formLayout_6.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.line_3)
         self.platform_create_2 = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.platform_create_2.setObjectName("platform_create_2")
+        self.platform_create_2.clicked.connect(lambda: self.create_cloud())
         self.formLayout_6.setWidget(9, QtWidgets.QFormLayout.SpanningRole, self.platform_create_2)
         self.update_platform = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.update_platform.setObjectName("update_platform")
@@ -545,6 +565,217 @@ class Ui_Form(object):
         self.update_user.setObjectName("update_user")
         self.verticalLayout_9.addWidget(self.update_user)
         self.stackedWidget.addWidget(self.page_10)
+        self.page_11 = QtWidgets.QWidget()
+        self.page_11.setObjectName("page_11")
+        self.verticalLayoutWidget_5 = QtWidgets.QWidget(self.page_11)
+        self.verticalLayoutWidget_5.setGeometry(QtCore.QRect(10, 20, 811, 581))
+        self.verticalLayoutWidget_5.setObjectName("verticalLayoutWidget_5")
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_5)
+        self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_11.setObjectName("verticalLayout_11")
+        self.horizontalLayout_13 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
+        self.verticalLayout_12 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_12.setObjectName("verticalLayout_12")
+        self.formLayout_7 = QtWidgets.QFormLayout()
+        self.formLayout_7.setObjectName("formLayout_7")
+        self.label_35 = QtWidgets.QLabel(self.verticalLayoutWidget_5)
+        self.label_35.setObjectName("label_35")
+        self.formLayout_7.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_35)
+        self.ram_platform = QtWidgets.QLineEdit(self.verticalLayoutWidget_5)
+        self.ram_platform.setObjectName("ram_platform")
+        self.formLayout_7.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.ram_platform)
+        self.core_platform = QtWidgets.QLineEdit(self.verticalLayoutWidget_5)
+        self.core_platform.setObjectName("core_platform")
+        self.formLayout_7.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.core_platform)
+        self.rate_platform = QtWidgets.QLineEdit(self.verticalLayoutWidget_5)
+        self.rate_platform.setObjectName("rate_platform")
+        self.formLayout_7.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.rate_platform)
+        self.storage_platform = QtWidgets.QLineEdit(self.verticalLayoutWidget_5)
+        self.storage_platform.setObjectName("storage_platform")
+        self.formLayout_7.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.storage_platform)
+        self.bandwidth_platform = QtWidgets.QLineEdit(self.verticalLayoutWidget_5)
+        self.bandwidth_platform.setObjectName("bandwidth_platform")
+        self.formLayout_7.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.bandwidth_platform)
+        self.label_36 = QtWidgets.QLabel(self.verticalLayoutWidget_5)
+        self.label_36.setObjectName("label_36")
+        self.formLayout_7.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_36)
+        self.label_37 = QtWidgets.QLabel(self.verticalLayoutWidget_5)
+        self.label_37.setObjectName("label_37")
+        self.formLayout_7.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.label_37)
+        self.label_38 = QtWidgets.QLabel(self.verticalLayoutWidget_5)
+        self.label_38.setObjectName("label_38")
+        self.formLayout_7.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.label_38)
+        self.label_39 = QtWidgets.QLabel(self.verticalLayoutWidget_5)
+        self.label_39.setObjectName("label_39")
+        self.formLayout_7.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.label_39)
+        self.update_platform_2 = QtWidgets.QPushButton(self.verticalLayoutWidget_5)
+        self.update_platform_2.setObjectName("update_platform_2")
+        self.update_platform_2.clicked.connect(lambda: self.update_platform_method())
+        self.formLayout_7.setWidget(7, QtWidgets.QFormLayout.SpanningRole, self.update_platform_2)
+        spacerItem5 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.formLayout_7.setItem(0, QtWidgets.QFormLayout.LabelRole, spacerItem5)
+        spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.formLayout_7.setItem(0, QtWidgets.QFormLayout.FieldRole, spacerItem6)
+        spacerItem7 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.formLayout_7.setItem(1, QtWidgets.QFormLayout.LabelRole, spacerItem7)
+        self.label_40 = QtWidgets.QLabel(self.verticalLayoutWidget_5)
+        self.label_40.setObjectName("label_40")
+        self.formLayout_7.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.label_40)
+        spacerItem8 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.formLayout_7.setItem(8, QtWidgets.QFormLayout.LabelRole, spacerItem8)
+        self.label_41 = QtWidgets.QLabel(self.verticalLayoutWidget_5)
+        self.label_41.setObjectName("label_41")
+        self.formLayout_7.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.label_41)
+        self.os_name = QtWidgets.QLineEdit(self.verticalLayoutWidget_5)
+        self.os_name.setObjectName("os_name")
+        self.formLayout_7.setWidget(9, QtWidgets.QFormLayout.FieldRole, self.os_name)
+        self.add_os = QtWidgets.QPushButton(self.verticalLayoutWidget_5)
+        self.add_os.setObjectName("add_os")
+        self.add_os.clicked.connect(lambda: self.add_to_os())
+        self.formLayout_7.setWidget(10, QtWidgets.QFormLayout.SpanningRole, self.add_os)
+        self.commandLinkButton_2 = QtWidgets.QCommandLinkButton(self.verticalLayoutWidget_5)
+        self.commandLinkButton_2.setObjectName("commandLinkButton_2")
+        self.commandLinkButton_2.clicked.connect(lambda: self.navigate_last_page())
+        self.formLayout_7.setWidget(0, QtWidgets.QFormLayout.SpanningRole, self.commandLinkButton_2)
+        self.horizontalLayout_13.addLayout(self.verticalLayout_12)
+        self.verticalLayout_12.addLayout(self.formLayout_7)
+        self.formLayout_7.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.label_40)
+        self.verticalLayout_12.addLayout(self.formLayout_7)
+        self.horizontalLayout_13.addLayout(self.verticalLayout_12)
+        self.platform_table = QtWidgets.QTableWidget(self.verticalLayoutWidget_5)
+        self.platform_table.setObjectName("platform_table")
+        self.platform_table.setColumnCount(0)
+        self.platform_table.setRowCount(0)
+        self.platform_table.itemSelectionChanged.connect(lambda: self.plaform_select())
+        self.horizontalLayout_13.addWidget(self.platform_table)
+        self.os_table = QtWidgets.QTableWidget(self.verticalLayoutWidget_5)
+        self.os_table.setObjectName("os_table")
+        self.os_table.setColumnCount(0)
+        self.os_table.setRowCount(0)
+        self.horizontalLayout_13.addWidget(self.os_table)
+        self.verticalLayout_11.addLayout(self.horizontalLayout_13)
+        self.horizontalLayout_12 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_12.setObjectName("horizontalLayout_12")
+        self.unselected = QtWidgets.QRadioButton(self.verticalLayoutWidget_5)
+
+        self.unselected.setObjectName("unselected")
+        self.unselected.setChecked(True)
+        self.unselected.clicked.connect(lambda: self.selected_os_radio_btn())
+        self.horizontalLayout_12.addWidget(self.unselected)
+        self.selected = QtWidgets.QRadioButton(self.verticalLayoutWidget_5)
+        self.selected.setObjectName("selected")
+        self.selected.clicked.connect(lambda: self.selected_os_radio_btn())
+        self.horizontalLayout_12.addWidget(self.selected)
+        self.add_or_remove = QtWidgets.QPushButton(self.verticalLayoutWidget_5)
+        self.add_or_remove.setObjectName("add_or_remove")
+        self.add_or_remove.clicked.connect(lambda: self.add_os_to_platform())
+        self.horizontalLayout_12.addWidget(self.add_or_remove)
+        self.verticalLayout_11.addLayout(self.horizontalLayout_12)
+        self.stackedWidget.addWidget(self.page_11)
+        self.page_12 = QtWidgets.QWidget()
+        self.page_12.setObjectName("page_12")
+        self.verticalLayoutWidget_10 = QtWidgets.QWidget(self.page_12)
+        self.verticalLayoutWidget_10.setGeometry(QtCore.QRect(20, 20, 801, 581))
+        self.verticalLayoutWidget_10.setObjectName("verticalLayoutWidget_10")
+        self.verticalLayout_13 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_10)
+        self.verticalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_13.setObjectName("verticalLayout_13")
+        self.commandLinkButton_3 = QtWidgets.QCommandLinkButton(self.verticalLayoutWidget_10)
+        self.commandLinkButton_3.setObjectName("commandLinkButton_3")
+        self.verticalLayout_13.addWidget(self.commandLinkButton_3)
+        self.tableWidget = QtWidgets.QTableWidget(self.verticalLayoutWidget_10)
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setRowCount(0)
+        self.verticalLayout_13.addWidget(self.tableWidget)
+        self.horizontalLayout_14 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
+        self.delete_cloud = QtWidgets.QPushButton(self.verticalLayoutWidget_10)
+        self.delete_cloud.setObjectName("delete_cloud")
+        self.horizontalLayout_14.addWidget(self.delete_cloud)
+        self.snapshot = QtWidgets.QPushButton(self.verticalLayoutWidget_10)
+        self.snapshot.setObjectName("snapshot")
+        self.horizontalLayout_14.addWidget(self.snapshot)
+        self.cloud_update = QtWidgets.QPushButton(self.verticalLayoutWidget_10)
+        self.cloud_update.setObjectName("cloud_update")
+        self.horizontalLayout_14.addWidget(self.cloud_update)
+        self.cloud_create = QtWidgets.QPushButton(self.verticalLayoutWidget_10)
+        self.cloud_create.setObjectName("cloud_create")
+        self.cloud_create.clicked.connect(lambda: self.navigate_create_platform())
+        self.horizontalLayout_14.addWidget(self.cloud_create)
+        self.verticalLayout_13.addLayout(self.horizontalLayout_14)
+        self.stackedWidget.addWidget(self.page_12)
+        self.page_13 = QtWidgets.QWidget()
+        self.page_13.setObjectName("page_13")
+        self.verticalLayoutWidget_11 = QtWidgets.QWidget(self.page_13)
+        self.verticalLayoutWidget_11.setGeometry(QtCore.QRect(20, 30, 801, 571))
+        self.verticalLayoutWidget_11.setObjectName("verticalLayoutWidget_11")
+        self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_11)
+        self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_14.setObjectName("verticalLayout_14")
+        self.commandLinkButton_4 = QtWidgets.QCommandLinkButton(self.verticalLayoutWidget_11)
+        self.commandLinkButton_4.setObjectName("commandLinkButton_4")
+        self.verticalLayout_14.addWidget(self.commandLinkButton_4)
+        self.tableWidget_2 = QtWidgets.QTableWidget(self.verticalLayoutWidget_11)
+        self.tableWidget_2.setObjectName("tableWidget_2")
+        self.tableWidget_2.setColumnCount(0)
+        self.tableWidget_2.setRowCount(0)
+        self.verticalLayout_14.addWidget(self.tableWidget_2)
+        self.horizontalLayout_15 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_15.setObjectName("horizontalLayout_15")
+        self.pushButton = QtWidgets.QPushButton(self.verticalLayoutWidget_11)
+        self.pushButton.setObjectName("pushButton")
+        self.horizontalLayout_15.addWidget(self.pushButton)
+        self.verticalLayout_14.addLayout(self.horizontalLayout_15)
+        self.stackedWidget.addWidget(self.page_13)
+        self.page_14 = QtWidgets.QWidget()
+        self.page_14.setObjectName("page_14")
+        self.formLayoutWidget_2 = QtWidgets.QWidget(self.page_14)
+        self.formLayoutWidget_2.setGeometry(QtCore.QRect(20, 20, 801, 581))
+        self.formLayoutWidget_2.setObjectName("formLayoutWidget_2")
+        self.formLayout_8 = QtWidgets.QFormLayout(self.formLayoutWidget_2)
+        self.formLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.formLayout_8.setObjectName("formLayout_8")
+        self.label_42 = QtWidgets.QLabel(self.formLayoutWidget_2)
+        self.label_42.setObjectName("label_42")
+        self.formLayout_8.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_42)
+        self.cloud_ram = QtWidgets.QLineEdit(self.formLayoutWidget_2)
+        self.cloud_ram.setObjectName("cloud_ram")
+        self.formLayout_8.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.cloud_ram)
+        self.cloud_core = QtWidgets.QLineEdit(self.formLayoutWidget_2)
+        self.cloud_core.setObjectName("cloud_core")
+        self.formLayout_8.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.cloud_core)
+        self.cloud_rate = QtWidgets.QLineEdit(self.formLayoutWidget_2)
+        self.cloud_rate.setObjectName("cloud_rate")
+        self.formLayout_8.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.cloud_rate)
+        self.cloud_storage = QtWidgets.QLineEdit(self.formLayoutWidget_2)
+        self.cloud_storage.setObjectName("cloud_storage")
+        self.formLayout_8.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.cloud_storage)
+        self.cloud_bandwidth = QtWidgets.QLineEdit(self.formLayoutWidget_2)
+        self.cloud_bandwidth.setObjectName("cloud_bandwidth")
+        self.formLayout_8.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.cloud_bandwidth)
+        self.label_43 = QtWidgets.QLabel(self.formLayoutWidget_2)
+        self.label_43.setObjectName("label_43")
+        self.formLayout_8.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_43)
+        self.label_44 = QtWidgets.QLabel(self.formLayoutWidget_2)
+        self.label_44.setObjectName("label_44")
+        self.formLayout_8.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.label_44)
+        self.label_45 = QtWidgets.QLabel(self.formLayoutWidget_2)
+        self.label_45.setObjectName("label_45")
+        self.formLayout_8.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.label_45)
+        self.label_46 = QtWidgets.QLabel(self.formLayoutWidget_2)
+        self.label_46.setObjectName("label_46")
+        self.formLayout_8.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.label_46)
+        self.cloud_create_2 = QtWidgets.QPushButton(self.formLayoutWidget_2)
+        self.cloud_create_2.setObjectName("cloud_create_2")
+        self.formLayout_8.setWidget(7, QtWidgets.QFormLayout.SpanningRole, self.cloud_create_2)
+        self.commandLinkButton_5 = QtWidgets.QCommandLinkButton(self.formLayoutWidget_2)
+        self.commandLinkButton_5.setObjectName("commandLinkButton_5")
+        self.formLayout_8.setWidget(0, QtWidgets.QFormLayout.SpanningRole, self.commandLinkButton_5)
+        spacerItem9 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.formLayout_8.setItem(1, QtWidgets.QFormLayout.FieldRole, spacerItem9)
+        self.stackedWidget.addWidget(self.page_14)
 
         self.retranslateUi(Form)
         self.stackedWidget.setCurrentIndex(0)
@@ -582,6 +813,7 @@ class Ui_Form(object):
         self.label_14.setText(_translate("Form", "CpuRate"))
         self.label_15.setText(_translate("Form", "BandWidth"))
         self.platform_create.setText(_translate("Form", "Create"))
+        self.update_platform_screen.setText(_translate("Form", "update platform"))
         self.all_platform_page.setText(_translate("Form", "show All platform"))
         self.create_platform_page.setText(_translate("Form", "create newPlatform"))
         self.add_tikets_page.setText(_translate("Form", "add tikets"))
@@ -604,9 +836,9 @@ class Ui_Form(object):
         self.signUp_2.clicked.connect(lambda: self.update_user(self.user.is_admin))
         self.settings_delete.setText(_translate("Form", "Delete Account"))
         self.label_29.setText(_translate("Form", "Os"))
-        #self.windows_3.setText(_translate("Form", "windows"))
-        #self.linux_3.setText(_translate("Form", "Linux"))
-        #self.mac_3.setText(_translate("Form", "MacOs"))
+        self.windows_3.setText(_translate("Form", "windows"))
+        self.linux_3.setText(_translate("Form", "Linux"))
+        self.mac_3.setText(_translate("Form", "MacOs"))
         self.label_30.setText(_translate("Form", "Ram"))
         self.label_31.setText(_translate("Form", "/MB "))
         self.label_32.setText(_translate("Form", "cpuCore  "))
@@ -614,6 +846,7 @@ class Ui_Form(object):
         self.label_34.setText(_translate("Form", "BandWidth"))
         self.pushButton_3.setText(_translate("Form", "show all snapshot of selected platform"))
         self.platform_create_2.setText(_translate("Form", "Create"))
+        self.storage.setText(_translate("Form", "storage"))
         self.update_platform.setText(_translate("Form", "update"))
         self.delete_platform.setText(_translate("Form", "Delete platform"))
         self.label_28.setText(_translate("Form", "storage"))
@@ -637,6 +870,32 @@ class Ui_Form(object):
         self.user_platform.setText(_translate("Form", "user platform"))
         self.user_ticket.setText(_translate("Form", "user ticket"))
         self.update_user.setText(_translate("Form", "update user"))
+        self.label_35.setText(_translate("Form", "ram"))
+        self.label_36.setText(_translate("Form", "cpu core"))
+        self.label_37.setText(_translate("Form", "cpu rate"))
+        self.label_38.setText(_translate("Form", "storage"))
+        self.label_39.setText(_translate("Form", "bandwidth"))
+        self.update_platform_2.setText(_translate("Form", "update"))
+        self.label_40.setText(_translate("Form", "Update platform"))
+        self.unselected.setText(_translate("Form", "unselected"))
+        self.label_41.setText(_translate("Form", "os name"))
+        self.add_os.setText(_translate("Form", "add os"))
+        self.selected.setText(_translate("Form", "selected"))
+        self.add_or_remove.setText(_translate("Form", "add"))
+        self.commandLinkButton_3.setText(_translate("Form", "Back"))
+        self.delete_cloud.setText(_translate("Form", "Delete"))
+        self.snapshot.setText(_translate("Form", "snapshot"))
+        self.cloud_update.setText(_translate("Form", "update"))
+        self.cloud_create.setText(_translate("Form", "create"))
+        self.commandLinkButton_4.setText(_translate("Form", "Back"))
+        self.pushButton.setText(_translate("Form", "select"))
+        self.label_42.setText(_translate("Form", "ram"))
+        self.label_43.setText(_translate("Form", "cpu core"))
+        self.label_44.setText(_translate("Form", "cpu rate"))
+        self.label_45.setText(_translate("Form", "storage size"))
+        self.label_46.setText(_translate("Form", "bandwidth"))
+        self.cloud_create_2.setText(_translate("Form", "create cloud"))
+        self.commandLinkButton_5.setText(_translate("Form", "Back"))
 
     def navigate_register(self):
         self.stackedWidget.setCurrentIndex(1)
@@ -675,10 +934,12 @@ class Ui_Form(object):
         stack.append(self.stackedWidget.currentIndex())
         self.stackedWidget.setCurrentIndex(9)
 
-    def navigate_update_platform(self, is_admin: bool):
+    def navigate_update_cloud(self, is_admin: bool, passport_id):
         # todo database
         stack.append(self.stackedWidget.currentIndex())
-        self.stackedWidget.setCurrentIndex(5)
+        self.stackedWidget.setCurrentIndex(11)
+        self.select_cloud(passport_id=passport_id)
+        self.update_cloud_table()
 
     def navigate_add_ticket(self):
         stack.append(self.stackedWidget.currentIndex())
@@ -687,6 +948,21 @@ class Ui_Form(object):
     def navigate_create_platform(self):
         stack.append(self.stackedWidget.currentIndex())
         self.stackedWidget.setCurrentIndex(0)
+
+    def navigate_update_platform(self):
+        self.get_platform()
+        stack.append(self.stackedWidget.currentIndex())
+        self.stackedWidget.setCurrentIndex(10)
+
+    def navigate_create_platform(self):
+        stack.append(self.stackedWidget.currentIndex())
+        self.stackedWidget.setCurrentIndex(12)
+        record = self.data_base.all_platform_os()
+        self.tableWidget_2.setRowCount(len(record))
+        self.tableWidget_2.setColumnCount(8)
+        for i in range(len(record)):
+            for j in range(8):
+                self.tableWidget_2.setItem(i, j, QtWidgets.QTableWidgetItem(str(record[i][j])))
 
     def sign_out(self):
         stack.clear()
@@ -723,7 +999,7 @@ class Ui_Form(object):
         email = self.settings_email.text()
         password = self.user.password
         self.data_base.update_user(first_name=name, last_name=family, passport_id=passport_id, email=email,
-                                   password=password, account_balance=account,is_admin=is_admin)
+                                   password=password, account_balance=account, is_admin=is_admin)
         record = self.data_base.check_user(passport_id=passport_id)
         self.create_user(record, self.user.is_admin)
         self.navigate_last_page()
@@ -746,7 +1022,8 @@ class Ui_Form(object):
                 self.create_user(record, is_admin=self.is_admin)
                 self.stackedWidget.setCurrentIndex(3)
         else:
-            self.data_base.admin_insert_table(first_name=name, last_name=family_name, email=email, passport_id=passport_id, password=password)
+            self.data_base.admin_insert_table(first_name=name, last_name=family_name, email=email,
+                                              passport_id=passport_id, password=password)
             self.stackedWidget.setCurrentIndex(3)
 
     def register_admin_select(self):
@@ -765,7 +1042,7 @@ class Ui_Form(object):
             account_balance = int(result[0][6])
             last_name = str(result[0][1]).replace(' ', '')
             self.user = User(passport_id=passport_id, first_name=first_name, last_name=last_name, email=email,
-                         password=password, join_date=join_date, is_admin=is_admin, account_balance=account_balance)
+                             password=password, join_date=join_date, is_admin=is_admin, account_balance=account_balance)
         else:
             password = str(result[0][5]).replace(' ', '')
             first_name = str(result[0][1]).replace(' ', '')
@@ -817,6 +1094,34 @@ class Ui_Form(object):
         elif self.tickets[self.selected_ticket][5] == 2:
             self.radio_rejected.setChecked(True)
 
+    def plaform_select(self,):
+        index = self.platform_table.currentRow()
+        platform_id = self.platforms[index].platform_pk
+        plat = self.platforms[index]
+        self.ram_platform.setText(str(plat.ram))
+        self.core_platform.setText(str(plat.cpu_core))
+        self.rate_platform.setText(str(plat.cpu_rate))
+        self.storage_platform.setText(str(plat.storage))
+        self.bandwidth_platform.setText(str(plat.bandwidth))
+        if self.unselected.isChecked():
+            record = self.data_base.unselected_platform_os(platform_id)
+            self.update_os_table(record)
+
+        if self.selected.isChecked():
+            record = self.data_base.selected_platform_os(platform_id)
+            self.update_os_table(record)
+
+    def update_os_table(self,record):
+        self.os_list.clear()
+        self.os_table.setColumnCount(2)
+        self.os_table.setRowCount(len(record))
+        for i in record:
+            operating_system = OperatingSystem(name=i[0], os_id=i[1])
+            self.os_list.append(operating_system)
+        for i in range(len(self.os_list)):
+            self.os_table.setItem(i, 0, QtWidgets.QTableWidgetItem(self.os_list[i].name))
+            self.os_table.setItem(i, 1, QtWidgets.QTableWidgetItem(str(self.os_list[i].os_id)))
+
     def add_tickets(self):
         self.add_ticket.toPlainText()
         result = self.data_base.ticket_insert_table(self.user.passport_id, self.add_ticket.toPlainText())
@@ -832,9 +1137,10 @@ class Ui_Form(object):
         if self.radio_rejected.isChecked():
             staus = 2
         elif self.radio_answered.isChecked():
-            staus =1
+            staus = 1
 
-        self.data_base.update_ticket(ticket[0], ticket[1], self.ticket_show_answer.toPlainText(), self.ticket_show_question.toPlainText(), status=staus)
+        self.data_base.update_ticket(ticket[0], ticket[1], self.ticket_show_answer.toPlainText(),
+                                     self.ticket_show_question.toPlainText(), status=staus)
         self.get_all_tickets()
 
     def get_all_user(self):
@@ -844,37 +1150,128 @@ class Ui_Form(object):
         self.user_table.setRowCount(len(record[0]))
         for i in range(len(record)):
             for j in range(len(record[i])):
-                self.user_table.setItem(i, j, QtWidgets.QTableWidgetItem(str(record[i][len(record[i]) - j - 1])))
+               self.user_table.setItem(i, j, QtWidgets.QTableWidgetItem(str(record[i][len(record[i]) - j - 1])))
 
     def get_os(self):
         record = self.data_base.get_os()
-        self.os_list=list()
+        self.os_list = list()
         for i in record:
             operating_system = OperatingSystem(name=i[1], os_id=i[0])
             self.os_list.append(operating_system)
 
+    def add_to_os(self):
+        self.data_base.os_insert_table(self.os_name.text())
+        self.selected_os_radio_btn()
+
     def create_platform(self):
-        ram = self.ram_update.text()
-        bandWidth = self.band_width_update.text()
-        core = self.cpu_core_update.text()
-        rate = self.cpu_rate_update.text()
-        storage = self.update_storage.text()
+        ram = self.ram.text()
+        bandWidth = self.band_width.text()
+        core = self.cpu_core.text()
+        rate = self.cpu_rate.text()
+        storage = self.storage_2.text()
         status = 0
-        #todo
+        self.data_base.platform_insert_table(storage_size=storage, ram=ram, cpu_core=core, cpu_rate=rate,
+                                             bandwidth=bandWidth)
+        self.navigate_last_page()
 
+    def create_cloud(self):
+        # todo handel os_id
+        letters = string.ascii_lowercase  # + string.ascii_uppercase
+        ssh = ''.join(random.choice(letters) for i in range(7))
+        storage = int(self.update_storage.text())
+        ram = int(self.ram_update.text())
+        core = int(self.cpu_core_update.text())
+        rate = int(self.cpu_core_update.text())
+        bandwidth = int(self.band_width_update.text())
+        self.data_base.cloud_insert_table(cloud_password=ssh, platform_pk=1, storage_size=storage, ram=ram,
+                                          cpu_core=core, cpu_rate=rate, os_id=2, bandwidth=bandwidth,
+                                          passport_id=int(self.user.passport_id))
 
+    def select_cloud(self,passport_id):
+        self.clouds = self.data_base.select_cloud(passport_id)
 
+    def update_cloud_table(self):
+        self.tableWidget.setColumnCount(13)
+        self.tableWidget.setRowCount(len(self.clouds)+1)
+        self.tableWidget.setItem(0,0, QtWidgets.QTableWidgetItem("cloud id"))
+        self.tableWidget.setItem(0,1, QtWidgets.QTableWidgetItem("daily price"))
+        self.tableWidget.setItem(0,2, QtWidgets.QTableWidgetItem("storage size"))
+        self.tableWidget.setItem(0,3, QtWidgets.QTableWidgetItem("ram"))
+        self.tableWidget.setItem(0,4, QtWidgets.QTableWidgetItem("cpu core"))
+        self.tableWidget.setItem(0,5, QtWidgets.QTableWidgetItem("cpu cpu rate"))
+        self.tableWidget.setItem(0,6, QtWidgets.QTableWidgetItem("band width"))
+        self.tableWidget.setItem(0,7, QtWidgets.QTableWidgetItem("create date"))
+        self.tableWidget.setItem(0,8, QtWidgets.QTableWidgetItem("ssh-hash"))
+        self.tableWidget.setItem(0,9, QtWidgets.QTableWidgetItem("ssh-salt"))
+        self.tableWidget.setItem(0,10, QtWidgets.QTableWidgetItem("os-id"))
+        self.tableWidget.setItem(0,11, QtWidgets.QTableWidgetItem("passport id"))
+        self.tableWidget.setItem(0,12, QtWidgets.QTableWidgetItem("platform_pk"))
+        for i in range(len(self.clouds)):
+            for j in range(13):
+                self.tableWidget.setItem(i, j, QtWidgets.QTableWidgetItem(str(self.clouds[i][j])))
 
+    def select_os(self, i):
+        print(self.os_list[i].name)
+
+    def get_platform(self):
+        self.platforms.clear()
+        record = list(self.data_base.select_platform())
+        self.platform_table.setColumnCount(1)
+        self.platform_table.setRowCount(len(record))
+        if len(record) > 0:
+            i=0
+            for item in record:
+                self.platforms.append(
+                    PlatformData(ram=item[2], platform_pk=item[0], storage=item[1], cpu_core=item[3], cpu_rate=item[4],
+                                             bandwidth=item[5]))
+                self.platform_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(item[0])))
+                i = i + 1
+
+    def selected_os_radio_btn(self):
+        if self.selected.isChecked():
+            self.add_or_remove.setText("remove")
+            self.plaform_select()
+
+        if self.unselected.isChecked():
+            self.add_or_remove.setText("add")
+            self.plaform_select()
+
+    def add_os_to_platform(self):
+        if self.unselected.isChecked():
+            os_table =self.os_table.currentRow()
+            os_id = self.os_list[os_table].os_id
+            plat = self.platform_table.currentRow()
+            platform_id = self.platforms[plat].platform_pk
+            self.data_base.dependency_insert_table(os_id=os_id,platform_pk=platform_id)
+            self.selected_os_radio_btn()
+        if self.selected.isChecked():
+            os_table = self.os_table.currentRow()
+            os_id = self.os_list[os_table].os_id
+            plat = self.platform_table.currentRow()
+            platform_id = self.platforms[plat].platform_pk
+            self.data_base.dependency_delete_table(os_id=os_id, platform_pk=platform_id)
+            self.selected_os_radio_btn()
+
+    def update_platform_method(self):
+        ram = self.ram_platform.text()
+        core = self.core_platform.text()
+        rate = self.ram_platform.text()
+        storage = self.storage_platform.text()
+        bandwidth = self.bandwidth_platform.text()
+        platform_pk = self.platforms[self.platform_table.currentRow()].platform_pk
+        self.data_base.update_platform(ram, core ,rate, storage, bandwidth, platform_pk)
+        self.get_platform()
 
     def __init__(self):
         self.data_base = Database()
         self.user = User(first_name="", last_name="", passport_id=0, is_admin=False, email="", join_date="",
                          account_balance=0, password="")
         self.get_os()
-        #for create platform
+        # for create platform
         self.operating_system = list()
-        #for show all platform
-        self.operating_system1: list[ QtWidgets.QRadioButton]
+        # for show all platform
+        self.operating_system1: list[QtWidgets.QRadioButton]
+        self.platforms = list()
 
 
 if __name__ == "__main__":

@@ -225,7 +225,7 @@ class Database:
         cursor.execute("""
                                 create table if not exists os(
                                 os_id serial PRIMARY KEY,
-                                os_name character(30) unique
+                                os_name character(30) unique,
                                 );
                                 """)
         self.connection.commit()
@@ -265,6 +265,45 @@ class Database:
             return False
         return True
 
+    def create_table_dependency(self):
+        cursor = self.connection.cursor()
+        cursor.execute("""
+                                 create table if not exists platform_os(
+                                 os_id int REFERENCES  os(os_id),
+                                 platform_id int REFERENCES  platform(platform_pk)
+                                 );
+                                 """)
+        self.connection.commit()
+        cursor.close()
+
+    def dependency_insert_table(self, os_id: int, platform_pk: int) -> bool:
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("""
+                                insert into platform_os (os_id,platform_id)
+                                values (%s,%s);
+                            """, (os_id,platform_pk)
+                           )
+            self.connection.commit()
+            cursor.close()
+            return True
+        except:
+            cursor.close()
+            return False
+
+    def dependency_delete_table(self, os_id: int, platform_pk: int) -> bool:
+        cursor = self.connection.cursor()
+        cursor.execute("rollback;")
+        cursor.execute("""
+                delete from platform_os where os_id = %s and platform_id=%s RETURNING platform_os.os_id;
+                """, (os_id, platform_pk))
+        self.connection.commit()
+        record = cursor.fetchall()
+        cursor.close()
+        if len(record) == 0:
+            return False
+        return True
+
     def get_os(self):
         cursor = self.connection.cursor()
         cursor.execute("rollback;")
@@ -274,11 +313,7 @@ class Database:
         self.connection.commit()
         record = cursor.fetchall()
         cursor.close()
-        # if len(record) == 0:
-        #     return False
         return record
-
-
 
     def platform_create_table(self):
         cursor = self.connection.cursor()
@@ -330,6 +365,38 @@ class Database:
             return False
         return True
 
+    def update_platform(self, ram, core, rate, storage, bandwidth, platform_pk):
+        cursor = self.connection.cursor()
+        cursor.execute("rollback;")
+        try:
+            cursor.execute("""
+                        update platform set
+                        ram=%s, cpu_core=%s, cpu_rate=%s, bandwidth=%s,storage_size=%s
+                        where  platform.platform_pk = %s;
+                    """, (ram, core, rate, bandwidth, storage, platform_pk)
+                           )
+            self.connection.commit()
+            cursor.close()
+            return True
+        except:
+            cursor.close()
+            return False
+
+    def select_platform(self):
+        cursor = self.connection.cursor()
+        cursor.execute("rollback;")
+        cursor.execute("""
+                select * from platform order by platform.platform_pk;
+                """,)
+        self.connection.commit()
+        record = cursor.fetchall()
+        cursor.close()
+        # if len(record) == 0:
+        #     return False
+        return record
+
+
+
     def cloud_create_table(self):
         cursor = self.connection.cursor()
         cursor.execute("""
@@ -358,8 +425,7 @@ class Database:
         self.connection.commit()
         cursor.close()
 
-    def cloud_insert_table(self, cloud_password: str, platform_pk: int, storage_size: int, ram: int, cpu_core: int,
-                           cpu_rate: int, bandwidth: int, os_id: int, passport_id: int) -> bool:
+    def cloud_insert_table(self, cloud_password: str, platform_pk: int, storage_size: int, ram: int, cpu_core: int, cpu_rate: int, bandwidth: int, os_id: int, passport_id: int) -> bool:
         cursor = self.connection.cursor()
         daily_price = (cpu_core * cpu_rate * 5000) + (ram * 4000) + (storage_size * 2000) + (bandwidth * 1000)
         ssh_salt = uuid.uuid4().hex
@@ -432,9 +498,9 @@ class Database:
                                 else RAISE EXCEPTION 'error'; 
                                 end if;
                             end;$$;
-                            """, (platform_pk, storage_size, ram, cpu_core, cpu_rate,
+                            """, ([platform_pk, storage_size, ram, cpu_core, cpu_rate,
                                   bandwidth, platform_pk, storage_size, ram, cpu_core, cpu_rate,
-                                  bandwidth, os_id, passport_id, daily_price, ssh_hash, ssh_salt)
+                                  bandwidth, os_id, passport_id, daily_price, ssh_hash, ssh_salt])
                            )
             self.connection.commit()
             cursor.close()
@@ -469,6 +535,58 @@ class Database:
         if len(record) == 0:
             return False
         return True
+
+    def select_cloud(self, passport):
+        cursor = self.connection.cursor()
+        cursor.execute("rollback;")
+        cursor.execute("""
+                select * from cloud where cloud.passport_id = %s;
+                """, [passport])
+        self.connection.commit()
+        record = cursor.fetchall()
+        cursor.close()
+
+        return record
+
+    def all_platform_os(self,):
+        cursor = self.connection.cursor()
+        cursor.execute("rollback;")
+        cursor.execute("""
+                 select os.os_id,os.os_name,platform.platform_pk,storage_size,ram,cpu_core,cpu_rate,bandwidth from os, platform, platform_os where (os.os_id=platform_os.os_id and platform.platform_pk = platform_os.platform_id);
+                  
+                """, )
+        self.connection.commit()
+        record = cursor.fetchall()
+        cursor.close()
+        return record
+
+
+    # todo
+    def selected_platform_os(self, platform_id) -> list:
+        cursor = self.connection.cursor()
+        cursor.execute("rollback;")
+        cursor.execute("""
+                select os_name,os.os_id from os,platform_os,platform where platform.platform_pk=%s and platform.platform_pk=platform_os.platform_id and os.os_id=platform_os.os_id
+                """,[platform_id])
+        self.connection.commit()
+        record = list
+        record = cursor.fetchall()
+        cursor.close()
+        return record
+
+    def unselected_platform_os(self, platform_id) -> list:
+        cursor = self.connection.cursor()
+        cursor.execute("rollback;")
+        cursor.execute("""
+                select os_name,os_id from os EXCEPT
+                select os_name,os.os_id from os,platform_os,platform where platform.platform_pk=%s and platform.platform_pk=platform_os.platform_id and os.os_id=platform_os.os_id
+
+        """, [platform_id])
+        self.connection.commit()
+        record = list
+        record = cursor.fetchall()
+        cursor.close()
+        return record
 
     def ticket_create_table(self):
         cursor = self.connection.cursor()
@@ -531,7 +649,6 @@ class Database:
             cursor.close()
             return record
 
-
     def ticket_delete(self, ticket_id: int) -> bool:
         cursor = self.connection.cursor()
         cursor.execute("rollback;")
@@ -569,7 +686,7 @@ class Database:
                     snapshots_id serial PRIMARY KEY,
                     cloud_id int references cloud(cloud_id) on delete cascade,
                     create_time character(30),
-                    size int
+                    sizee int,
                     );
                 """)
         self.connection.commit()
@@ -587,11 +704,34 @@ class Database:
         create_time = str(datetime.datetime.now()).split(".")[0]
         cursor.execute("rollback;")
         try:
-            cursor.execute("""
+            cursor.execute("""  
+                                CREATE OR REPLACE FUNCTION get_size_of_cloud(input_cloud_id int)
+                                RETURNS int AS $$
+                            declare  resultt int;
+                            begin
+                                select storage_size
+                                into result
+                                from cloud
+                                where cloud.cloud_id = input_cloud_id;
+                                return result;
+                            end;
+                            $$ language plpgsql;
+                            
+                            do $$
+                            begin
+                                if check_platform_data_to_cloud(%s, %s, %s, %s, %s, %s) then 
+                                    insert into cloud
+                                    (platform_pk, storage_size, ram, cpu_core, cpu_rate,
+                                     bandwidth, os_id, passport_id, daily_price, ssh_hash, ssh_salt)
+                                    values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                                else RAISE EXCEPTION 'error'; 
+                                end if;
+                            end;$$;
+                            
                                 insert into snapshots
-                                (cloud_id, create_time)
-                                values (%s, %s);
-                            """, (cloud_id, create_time,)
+                                (cloud_id, create_time, sizee)
+                                values (%s, %s, %s);
+                            """, (cloud_id, create_time)
                            )
             self.connection.commit()
             cursor.close()
